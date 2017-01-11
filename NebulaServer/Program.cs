@@ -22,7 +22,7 @@ namespace Nebula.Server
             Thread.CurrentThread.Join();
         }
 
-        private static void OnClientConnected(string obj)
+        private static void OnClientConnected(NebulaClient obj)
         {
             Console.WriteLine("Client Connected: " + obj);
         }

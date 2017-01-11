@@ -15,8 +15,7 @@ using System.Windows.Shapes;
 using Nebula.Server;
 
 namespace Nebula.Server.WpfGui
-{
-    
+{    
     public partial class MainWindow : Window
     {
         private NebulaMasterService m_hService;
@@ -24,6 +23,8 @@ namespace Nebula.Server.WpfGui
         public MainWindow()
         {
             InitializeComponent();
+
+            MenuItemStartClick(null, null);
         }
 
         private void MenuItemStartClick(object sender, RoutedEventArgs e)
@@ -48,13 +49,13 @@ namespace Nebula.Server.WpfGui
         }
 
         private void OnClientDisconnected(NebulaClient obj)
-        {
-            throw new NotImplementedException();
+        {            
+            Dispatcher.BeginInvoke((Action)(() => m_hClientList.Items.Remove(obj)));
         }
 
-        private void OnClientConnected(string obj)
+        private void OnClientConnected(NebulaClient obj)
         {
-            throw new NotImplementedException();
+            Dispatcher.BeginInvoke((Action)(() => m_hClientList.Items.Add(obj)));
         }
     }
 }

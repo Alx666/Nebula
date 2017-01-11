@@ -1,7 +1,9 @@
 ﻿using Nebula.Shared;
 using System;
 using System.Collections.Concurrent;
+using System.Net;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.Threading;
 
 namespace Nebula.Server
@@ -14,7 +16,7 @@ namespace Nebula.Server
         private static int                                                          m_iCounter;
 
         public event Action<NebulaClient> ClientFaulted;
-        public event Action<string> ClientConnected;
+        public event Action<NebulaClient> ClientConnected;
 
         public NebulaMasterService()
         {
@@ -65,10 +67,13 @@ namespace Nebula.Server
             INebulaMasterServiceCB  hCb         = hCurrent.GetCallbackChannel<INebulaMasterServiceCB>();
      
             (hCb as ICommunicationObject).Faulted += OnFaulted;
-                        
-            m_hClients.TryAdd(hCb, new NebulaClient(Interlocked.Increment(ref m_iCounter), hCb));
-            
-            ClientConnected?.Invoke(sMachineInfo);
+
+            RemoteEndpointMessageProperty hRemoteProperty = (OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty);            
+
+            NebulaClient            hClient               = new NebulaClient(Interlocked.Increment(ref m_iCounter), hCb, sMachineInfo, new IPEndPoint(IPAddress.Parse(hRemoteProperty.Address), hRemoteProperty.Port));
+
+            m_hClients.TryAdd(hCb, hClient);            
+            ClientConnected?.Invoke(hClient);
         }
 
         private void OnFaulted(object sender, EventArgs e)
@@ -83,7 +88,7 @@ namespace Nebula.Server
             else
             {
                 //TODO: accrocco temporaneo, prevedere sistema per la notifica dei  dei client mancanti
-                Console.WriteLine("Attemping to remove client failed");
+                throw new NotImplementedException();
             }            
         }
 

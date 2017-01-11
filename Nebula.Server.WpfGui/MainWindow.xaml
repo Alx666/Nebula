@@ -21,7 +21,15 @@
         <StatusBar Grid.Row="2" Margin="0" VerticalAlignment="Bottom">
             <StatusBarItem Content="StatusBarItem" VerticalAlignment="Top"/>
         </StatusBar>
-        <ListBox x:Name="m_hClientList" Grid.Row="1"/>
+        <ListView x:Name="m_hClientList" Grid.Row="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Id"        DisplayMemberBinding="{Binding Id}"             Width="50"/>
+                    <GridViewColumn Header="Machine"   DisplayMemberBinding="{Binding Machine}"   Width="200"/>
+                    <GridViewColumn Header="Address"   DisplayMemberBinding="{Binding Address}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
     
     

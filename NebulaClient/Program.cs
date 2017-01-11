@@ -49,7 +49,7 @@ namespace Nebula.Client
             (hService as ICommunicationObject).Faulted += OnFaulted;
             (hService as ICommunicationObject).Closed  += OnClosed;
 
-            hService.Register("Ciao sono il primo");
+            hService.Register(Environment.MachineName);
             
             System.Threading.Thread.CurrentThread.Join();
         }
