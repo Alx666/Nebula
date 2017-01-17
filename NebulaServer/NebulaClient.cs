@@ -17,6 +17,6 @@ namespace Nebula.Server
         public string       Machine     { get; private set; }
         public IPEndPoint   Address     { get; private set; }
 
-        internal INebulaMasterServiceCB Callback { get; set; }
+        public INebulaMasterServiceCB Callback { get; set; }
     }
 }

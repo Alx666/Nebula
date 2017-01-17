@@ -8,16 +8,19 @@ namespace Nebula.Client
     {
         public string AddModule(byte[] hAssembly)
         {
+            Console.WriteLine("Received AddModule Request");
             return "Done";
         }
       
         public NebulaModuleInfo[] ListModules()
         {
+            Console.WriteLine("Received ListModules Request");
             return null;
         }
 
         public string RemoveModule(Guid vAssemblyId)
         {
+            Console.WriteLine("Received RemoveModule Request" + vAssemblyId);
             return "Done";
         }
     }

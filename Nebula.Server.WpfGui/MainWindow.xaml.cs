@@ -69,16 +69,23 @@ namespace Nebula.Server.WpfGui
         private void OnContextMenuAddModule(object sender, RoutedEventArgs e)
         {
             NebulaClient hClient = m_hClientList.SelectedItem as NebulaClient;
+
+            hClient.Callback.AddModule(null);
+            
         }
 
-        private void OnContextMenuRemoveModule(object sender, ContextMenuEventArgs e)
+        private void OnContextMenuRemoveModule(object sender, RoutedEventArgs e)
         {
+            NebulaClient hClient = m_hClientList.SelectedItem as NebulaClient;
 
+            hClient.Callback.RemoveModule(Guid.NewGuid());
         }
 
-        private void OnContextMenuListModules(object sender, ContextMenuEventArgs e)
+        private void OnContextMenuListModules(object sender, RoutedEventArgs e)
         {
+            NebulaClient hClient = m_hClientList.SelectedItem as NebulaClient;
 
+            hClient.Callback.ListModules();
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
