@@ -6,6 +6,48 @@ namespace Nebula.Client
 {
     class NebulaMasterServiceCB : INebulaMasterServiceCB
     {
+        #region Event Accessors
+
+        public event EventHandler Faulted
+        {  
+            add  
+            {
+                (Service as ICommunicationObject).Faulted += value;
+            }
+
+            remove  
+            {
+                (Service as ICommunicationObject).Faulted -= value;
+            }  
+        }
+
+        public event EventHandler Closed
+        {
+            add
+            {
+                (Service as ICommunicationObject).Closed += value;
+            }
+
+            remove
+            {
+                (Service as ICommunicationObject).Closed -= value;
+            }
+        }
+
+        #endregion
+
+        public INebulaMasterService Service { get; private set; }
+
+        public NebulaMasterServiceCB(string sAddr, int iPort)
+        {
+            NetTcpBinding hBinding  = new NetTcpBinding();
+            EndpointAddress hAddr   = new EndpointAddress($"net.tcp://{sAddr}:{iPort}/NebulaMasterService");
+
+            DuplexChannelFactory<INebulaMasterService> hFactory = new DuplexChannelFactory<INebulaMasterService>(typeof(NebulaMasterServiceCB), hBinding, hAddr);
+
+            Service = hFactory.CreateChannel(new InstanceContext(this));                        
+        }
+
         public string AddModule(byte[] hAssembly)
         {
             Console.WriteLine("Received AddModule Request");
@@ -20,7 +62,7 @@ namespace Nebula.Client
 
         public string RemoveModule(Guid vAssemblyId)
         {
-            Console.WriteLine("Received RemoveModule Request" + vAssemblyId);
+            Console.WriteLine("Received RemoveModule Request: " + vAssemblyId);
             return "Done";
         }
     }
@@ -29,16 +71,12 @@ namespace Nebula.Client
     {
         static void Main(string[] args)
         {
-            NetTcpBinding hBinding = new NetTcpBinding();
-            EndpointAddress hAddr  = new EndpointAddress("net.tcp://localhost:28000/NebulaMasterService");
+            NebulaMasterServiceCB hCb = new NebulaMasterServiceCB("localhost", 28000);
+            hCb.Closed  += OnClosed;
+            hCb.Faulted += OnFaulted;
 
-            DuplexChannelFactory<INebulaMasterService> hFactory = new DuplexChannelFactory<INebulaMasterService>(typeof(NebulaMasterServiceCB), hBinding, hAddr);
-            
-            INebulaMasterService hService = hFactory.CreateChannel(new InstanceContext(new NebulaMasterServiceCB()));
-            (hService as ICommunicationObject).Faulted += OnFaulted;
-            (hService as ICommunicationObject).Closed  += OnClosed;
 
-            hService.Register(Environment.MachineName);
+            hCb.Service.Register(Environment.MachineName);
             
             System.Threading.Thread.CurrentThread.Join();
         }
