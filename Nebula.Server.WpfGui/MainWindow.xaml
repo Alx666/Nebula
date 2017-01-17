@@ -19,12 +19,26 @@
             </MenuItem>
         </Menu>
         <StatusBar Grid.Row="2" Margin="0" VerticalAlignment="Bottom">
-            <StatusBarItem Content="StatusBarItem" VerticalAlignment="Top"/>
+            <StatusBarItem VerticalAlignment="Top">
+                <TextBlock Name="m_hStatusLabel"/>
+            </StatusBarItem>
         </StatusBar>
         <ListView x:Name="m_hClientList" Grid.Row="1">
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Add Module"       Click="OnContextMenuAddModule" />
+                    <MenuItem Header="Remove Module"    Click="OnContextMenuRemoveModule" />
+                    <MenuItem Header="List Modules"     Click="OnContextMenuListModules" />
+                    <Separator/>
+                    <MenuItem Header="Command0"/>
+                    <MenuItem Header="Command1"/>
+                    <MenuItem Header="Command2"/>
+                    <MenuItem Header="Command3"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Id"        DisplayMemberBinding="{Binding Id}"             Width="50"/>
+                    <GridViewColumn Header="Id"        DisplayMemberBinding="{Binding Id}"        Width="50"/>
                     <GridViewColumn Header="Machine"   DisplayMemberBinding="{Binding Machine}"   Width="200"/>
                     <GridViewColumn Header="Address"   DisplayMemberBinding="{Binding Address}" />
                 </GridView>

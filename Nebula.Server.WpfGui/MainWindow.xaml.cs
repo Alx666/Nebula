@@ -49,13 +49,41 @@ namespace Nebula.Server.WpfGui
         }
 
         private void OnClientDisconnected(NebulaClient obj)
-        {            
-            Dispatcher.BeginInvoke((Action)(() => m_hClientList.Items.Remove(obj)));
+        {
+            Dispatcher.BeginInvoke((Action)(() => 
+            {
+                m_hClientList.Items.Remove(obj);
+                m_hStatusLabel.Text = $"{m_hClientList.Items.Count} Clients Connected";
+            }));            
         }
 
         private void OnClientConnected(NebulaClient obj)
         {
-            Dispatcher.BeginInvoke((Action)(() => m_hClientList.Items.Add(obj)));
+            Dispatcher.BeginInvoke((Action)(() => 
+            {
+                m_hClientList.Items.Add(obj);
+                m_hStatusLabel.Text = $"{m_hClientList.Items.Count} Clients Connected";
+            }));
+        }
+
+        private void OnContextMenuAddModule(object sender, RoutedEventArgs e)
+        {
+            NebulaClient hClient = m_hClientList.SelectedItem as NebulaClient;
+        }
+
+        private void OnContextMenuRemoveModule(object sender, ContextMenuEventArgs e)
+        {
+
+        }
+
+        private void OnContextMenuListModules(object sender, ContextMenuEventArgs e)
+        {
+
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

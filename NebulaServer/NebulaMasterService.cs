@@ -49,17 +49,6 @@ namespace Nebula.Server
 
         #region ContractOperations
 
-        public string Execute(int iClientId, string sData)
-        {            
-            try
-            {
-                return m_hClients[OperationContext.Current.GetCallbackChannel<INebulaMasterServiceCB>()].Callback.Execute(sData);
-            }
-            catch (Exception hEx)
-            {
-                return hEx.ToString();
-            }
-        }
 
         public void Register(string sMachineInfo)
         {
@@ -118,7 +107,12 @@ namespace Nebula.Server
             Dispose(true);
         }
 
-        #endregion    
+        public string Execute(int iClientId, string sBinary)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 
 }

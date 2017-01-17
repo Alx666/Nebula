@@ -6,33 +6,19 @@ namespace Nebula.Client
 {
     class NebulaMasterServiceCB : INebulaMasterServiceCB
     {
-        public string Execute(string sBase64Assembly)
+        public string AddModule(byte[] hAssembly)
         {
+            return "Done";
+        }
+      
+        public NebulaModuleInfo[] ListModules()
+        {
+            return null;
+        }
 
-            Console.WriteLine(sBase64Assembly);
-            return sBase64Assembly;
-
-            //try
-            //{
-            //    byte[] hAssemblyMem = Convert.FromBase64String(sBase64Assembly);
-
-            //    Assembly hAsm = Assembly.Load(hAssemblyMem);
-
-            //    var res = from hType in hAsm.ExportedTypes
-            //              from hMethod in hType.GetMethods(BindingFlags.Static | BindingFlags.Public)
-            //              where hType.IsClass && hMethod.Name == "Main"
-            //              select new { Type = hType, Main = hMethod };
-
-            //    StringBuilder hSb = new StringBuilder();
-
-            //    res.ToList().ForEach(x => hSb.AppendLine(x.Main.Invoke(null, null).ToString()));
-
-            //    return hSb.ToString();
-            //}
-            //catch (Exception hEx)
-            //{
-            //    return hEx.ToString();
-            //}
+        public string RemoveModule(Guid vAssemblyId)
+        {
+            return "Done";
         }
     }
 
