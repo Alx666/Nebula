@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Nebula.Server;
+using System.IO;
+using Nebula.Shared;
 
 namespace Nebula.Server.WpfGui
 {    
@@ -69,9 +71,20 @@ namespace Nebula.Server.WpfGui
         private void OnContextMenuAddModule(object sender, RoutedEventArgs e)
         {
             NebulaClient hClient = m_hClientList.SelectedItem as NebulaClient;
-
-            hClient.Callback.AddModule(null);
             
+            Microsoft.Win32.OpenFileDialog hDlg = new Microsoft.Win32.OpenFileDialog();
+            hDlg.FileName = "Nebula Module";
+            hDlg.DefaultExt = ".dll";
+            hDlg.Filter = "Assembly Files (.dll)|*.dll";
+   
+            if (hDlg.ShowDialog() == true)
+            {
+                byte[] hData = File.ReadAllBytes(hDlg.FileName);
+
+                List<NebulaModuleInfo> hModules = hClient.Callback.AddModule(hData);
+                MessageBox.Show(hModules.First().Name + " was installed");
+            }
+                        
         }
 
         private void OnContextMenuRemoveModule(object sender, RoutedEventArgs e)

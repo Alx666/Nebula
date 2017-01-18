@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Server.WpfGui", "Neb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Service", "Nebula.Service\Nebula.Service.csproj", "{32052B33-44B3-4FDC-B17B-E311571FD370}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Modules.Embryo", "Nebula.Modules.Embryo\Nebula.Modules.Embryo.csproj", "{692A2BF8-35AC-4938-A9CB-E9C05ED774F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{32052B33-44B3-4FDC-B17B-E311571FD370}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32052B33-44B3-4FDC-B17B-E311571FD370}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32052B33-44B3-4FDC-B17B-E311571FD370}.Release|Any CPU.Build.0 = Release|Any CPU
+		{692A2BF8-35AC-4938-A9CB-E9C05ED774F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{692A2BF8-35AC-4938-A9CB-E9C05ED774F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{692A2BF8-35AC-4938-A9CB-E9C05ED774F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{692A2BF8-35AC-4938-A9CB-E9C05ED774F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

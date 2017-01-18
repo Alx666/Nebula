@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 
 namespace Nebula.Shared
@@ -6,7 +7,7 @@ namespace Nebula.Shared
     public interface INebulaMasterServiceCB
     {
         [OperationContract]
-        string AddModule(byte[] hAssembly);
+        List<NebulaModuleInfo> AddModule(byte[] hAssembly);
 
         [OperationContract]
         string RemoveModule(Guid vAssemblyId);        
