@@ -27,7 +27,9 @@ namespace Nebula.Server
         {
             m_hClients.Clear();
             m_hHost = new ServiceHost(this, new Uri($"net.tcp://localhost:{iPort}/NebulaMasterService"));
-            m_hHost.AddServiceEndpoint(typeof(INebulaMasterService), new NetTcpBinding(), "");
+            NetTcpBinding hBinding = new NetTcpBinding();
+            hBinding.Security.Mode = SecurityMode.None;
+            m_hHost.AddServiceEndpoint(typeof(INebulaMasterService), hBinding, "");
             m_hHost.Open();
         }
 

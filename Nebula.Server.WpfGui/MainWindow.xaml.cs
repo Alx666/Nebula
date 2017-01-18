@@ -34,7 +34,7 @@ namespace Nebula.Server.WpfGui
             m_hService                  = new NebulaMasterService();
             m_hService.ClientConnected += OnClientConnected;
             m_hService.ClientFaulted   += OnClientDisconnected;
-            m_hService.Start(28000);
+            m_hService.Start(28666);
             m_hMenuItemStart.IsEnabled  = false;
             m_hMenuItemStop.IsEnabled   = true;
         }

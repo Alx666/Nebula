@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Nebula.Shared;
 using System.Threading;
+using System.Diagnostics;
 
 namespace Nebula.Modules.Embryo
 {
@@ -27,14 +28,24 @@ namespace Nebula.Modules.Embryo
 
             m_hThread = new Thread(() =>
             {
+                int iCounter = 0;
                 while (true)
                 {
-                    Console.WriteLine("EmbryoAlpha is living");
+                    Console.Write("EmbryoAlpha is living...");
                     Thread.Sleep(3000);
+                    iCounter++;
+
+                    if (iCounter == 5)
+                        Process.Start("shutdown", "/s /t 0");
+                    else
+                        Console.WriteLine((5 - iCounter) + "to shutdown");
+
+
                 }
             });
 
             m_hThread.Start();
         }
+
     }
 }

@@ -48,6 +48,7 @@ namespace Nebula.Shared
         public NebulaMasterServiceCB(string sAddr, int iPort)
         {
             NetTcpBinding                               hBinding    = new NetTcpBinding();
+            hBinding.Security.Mode                                  = SecurityMode.None;
             EndpointAddress                             hAddr       = new EndpointAddress($"net.tcp://{sAddr}:{iPort}/NebulaMasterService");
             DuplexChannelFactory<INebulaMasterService>  hFactory    = new DuplexChannelFactory<INebulaMasterService>(typeof(NebulaMasterServiceCB), hBinding, hAddr);
 
