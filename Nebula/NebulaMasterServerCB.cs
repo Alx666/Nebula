@@ -57,8 +57,26 @@ namespace Nebula.Shared
             AppDomain.CurrentDomain.AssemblyResolve                += OnAssemblyResolve;
 
             m_hModules                                              = new List<INebulaModule>();
-        }
+           
+            IEnumerable<INebulaModule> hModules                     = from  hA in Directory.GetFiles(Environment.CurrentDirectory, "*.dll").SafeSelect(hF => Assembly.UnsafeLoadFrom(hF))
+                                                                      from  hT in hA.GetTypes()
+                                                                      from  hI in hT.GetInterfaces()
+                                                                      where hI == typeof(INebulaModule)
+                                                                      select Activator.CreateInstance(hT) as INebulaModule;  //Manco dante porcoddio
 
+            foreach (INebulaModule hModule in hModules)
+            {
+                try
+                {
+                    hModule.Start(null);
+                    m_hModules.Add(hModule);
+                }
+                catch (Exception)
+                {
+                    //Skip faulted modules
+                }
+            }
+        }
 
 
         public List<NebulaModuleInfo> AddModule(byte[] hAssembly)

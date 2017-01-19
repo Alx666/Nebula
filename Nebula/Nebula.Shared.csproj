@@ -46,6 +46,7 @@
     <Compile Include="INebulaMasterServerCB.cs" />
     <Compile Include="INebulaMasterService.cs" />
     <Compile Include="INebulaModule.cs" />
+    <Compile Include="NebulaLinqExtensions.cs" />
     <Compile Include="NebulaMasterServerCB.cs" />
     <Compile Include="NebulaModuleInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
