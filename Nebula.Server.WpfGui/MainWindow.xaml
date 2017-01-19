@@ -14,14 +14,18 @@
         </Grid.RowDefinitions>
         <Menu x:Name="menu"  Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top">
             <MenuItem Header="Server">
-                <MenuItem Header="Start" Name="m_hMenuItemStart" HorizontalAlignment="Left" Click="MenuItemStartClick">
+                <MenuItem Header="Startup" HorizontalAlignment="Left" >
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <Label   Grid.Column="0" Content="Port:"/>
-                        <TextBox Grid.Column="1" Width="50" DataContext=""/>
+                        <Label   Grid.Column="0" Content="Port:" VerticalAlignment="Center" Height="auto"/>
+                        <TextBox Grid.Column="1" Name="m_hTextPort" Width="60" Height="Auto" TextAlignment="Center" VerticalAlignment="Stretch" Padding="6"/>
+                        <Button  Grid.Column="2" Name="m_hButtonStart" Click="OnButtonStart">
+                            <Label Name="m_hButtonStartLabel">Start</Label>
+                        </Button>
                     </Grid>
                 </MenuItem>
                 <MenuItem Header="Stop"  Name="m_hMenuItemStop" HorizontalAlignment="Left" IsEnabled="False"/>

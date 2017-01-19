@@ -37,27 +37,9 @@ namespace Nebula.Server.WpfGui
                 m_iCurrentPort = 28000;                
             }
 
-        }
+            m_hTextPort.Text = m_iCurrentPort.ToString();
 
-        private void MenuItemStartClick(object sender, RoutedEventArgs e)
-        {
-            m_hService                  = new NebulaMasterService();
-            m_hService.ClientConnected += OnClientConnected;
-            m_hService.ClientFaulted   += OnClientDisconnected;
-            m_hService.Start(28666);
-            m_hMenuItemStart.IsEnabled  = false;
-            m_hMenuItemStop.IsEnabled   = true;
-        }
-
-        private void MenuItemStopClick(object sender, RoutedEventArgs e)
-        {
-            m_hService.ClientConnected -= OnClientConnected;
-            m_hService.ClientFaulted   -= OnClientDisconnected;
-            m_hService.Stop();
-            m_hService.Dispose();
-            m_hService                  = null;
-            m_hMenuItemStart.IsEnabled  = true;
-            m_hMenuItemStop.IsEnabled   = false;
+            m_hStatusLabel.Text = "Server Stopped";
         }
 
         private void OnClientDisconnected(NebulaClient obj)
@@ -111,9 +93,46 @@ namespace Nebula.Server.WpfGui
             hClient.Callback.ListModules();
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+
+        private void OnButtonStart(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (m_hButtonStart.Tag == null)
+                {
+                    m_iCurrentPort                   = int.Parse(m_hTextPort.Text);
+                    m_hService                       = new NebulaMasterService();
+                    m_hService.ClientConnected      += OnClientConnected;
+                    m_hService.ClientFaulted        += OnClientDisconnected;
+
+                    m_hService.Start(m_iCurrentPort);
+                    m_hButtonStart.Tag = m_hService;
+                    m_hButtonStartLabel.Content = "Stop";
+                    m_hTextPort.IsEnabled = false;
+
+                    m_hStatusLabel.Text = "Server Started";
+                }
+                else
+                {
+                    m_hService.Dispose();
+                    m_hButtonStart.Tag = null;
+                    m_hService.ClientConnected      -= OnClientConnected;
+                    m_hService.ClientFaulted        -= OnClientDisconnected;
+                    m_hButtonStartLabel.Content = "Start";
+                    m_hTextPort.IsEnabled = true;
+
+                    m_hStatusLabel.Text = "Server Stopped";
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+
             
+
+
+
         }
     }
 }
