@@ -106,33 +106,25 @@ namespace Nebula.Server.WpfGui
                     m_hService.ClientFaulted        += OnClientDisconnected;
 
                     m_hService.Start(m_iCurrentPort);
-                    m_hButtonStart.Tag = m_hService;
-                    m_hButtonStartLabel.Content = "Stop";
-                    m_hTextPort.IsEnabled = false;
-
-                    m_hStatusLabel.Text = "Server Started";
+                    m_hButtonStart.Tag               = m_hService;
+                    m_hButtonStartLabel.Content      = "Stop";
+                    m_hTextPort.IsEnabled            = false;
+                    m_hStatusLabel.Text              = "Server Started";
                 }
                 else
                 {
                     m_hService.Dispose();
-                    m_hButtonStart.Tag = null;
+                    m_hButtonStart.Tag               = null;
                     m_hService.ClientConnected      -= OnClientConnected;
                     m_hService.ClientFaulted        -= OnClientDisconnected;
-                    m_hButtonStartLabel.Content = "Start";
-                    m_hTextPort.IsEnabled = true;
-
-                    m_hStatusLabel.Text = "Server Stopped";
+                    m_hButtonStartLabel.Content      = "Start";
+                    m_hTextPort.IsEnabled            = true;
+                    m_hStatusLabel.Text              = "Server Stopped";
                 }
             }
             catch (Exception)
             {
-            }
-
-
-            
-
-
-
+            }            
         }
     }
 }
