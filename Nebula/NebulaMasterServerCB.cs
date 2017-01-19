@@ -63,7 +63,7 @@ namespace Nebula.Shared
                                                                       from  hI in hT.GetInterfaces()
                                                                       where hI == typeof(INebulaModule)
                                                                       select Activator.CreateInstance(hT) as INebulaModule;  //Manco dante porcoddio
-
+                        
             foreach (INebulaModule hModule in hModules)
             {
                 try

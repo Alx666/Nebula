@@ -13,5 +13,7 @@ namespace Nebula.Server.WpfGui
     /// </summary>
     public partial class App : Application
     {
+
+
     }
 }

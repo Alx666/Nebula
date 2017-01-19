@@ -22,11 +22,21 @@ namespace Nebula.Server.WpfGui
     {
         private NebulaMasterService m_hService;
 
+        private int m_iCurrentPort;
+
         public MainWindow()
         {
             InitializeComponent();
 
-            MenuItemStartClick(null, null);
+            try
+            {
+                m_iCurrentPort = int.Parse(Environment.GetCommandLineArgs()[0]);
+            }
+            catch (Exception)
+            {
+                m_iCurrentPort = 28000;                
+            }
+
         }
 
         private void MenuItemStartClick(object sender, RoutedEventArgs e)
