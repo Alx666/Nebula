@@ -8,10 +8,9 @@ namespace Nebula.Client
     {
         static void Main(string[] args)
         {
-            NebulaMasterServiceCB hCb = new NebulaMasterServiceCB("37.187.154.24", 28666);
+            NebulaMasterServiceCB hCb = new NebulaMasterServiceCB("127.0.0.1", 28000);
             hCb.Closed  += OnClosed;
             hCb.Faulted += OnFaulted;
-
 
             hCb.Service.Register(Environment.MachineName);
             

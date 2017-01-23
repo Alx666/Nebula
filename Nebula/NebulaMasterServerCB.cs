@@ -79,7 +79,7 @@ namespace Nebula.Shared
         }
 
 
-        public List<NebulaModuleInfo> AddModule(byte[] hAssembly)
+        public NebulaModuleInfo[] AddModule(byte[] hAssembly)
         {
             string sFileName = Guid.NewGuid().ToString() + ".dll";
 
@@ -109,19 +109,17 @@ namespace Nebula.Shared
             }
 
             
-            return hInstalledModules;
+            return hInstalledModules.ToArray();
         }
 
         public NebulaModuleInfo[] ListModules()
         {
-            Console.WriteLine("Received ListModules Request");
-            return null;
+            return m_hModules.Select(hM => hM.ModuleInfo).ToArray();
         }
 
         public string RemoveModule(Guid vAssemblyId)
         {
-            Console.WriteLine("Received RemoveModule Request: " + vAssemblyId);
-            return "Done";
+            return "NotImplemented";
         }
 
         #region private stuff

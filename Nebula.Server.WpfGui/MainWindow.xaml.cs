@@ -34,12 +34,17 @@ namespace Nebula.Server.WpfGui
             }
             catch (Exception)
             {
-                m_iCurrentPort = 28000;                
+                m_iCurrentPort = 28000;
             }
 
             m_hTextPort.Text = m_iCurrentPort.ToString();
 
             m_hStatusLabel.Text = "Server Stopped";
+
+            m_hClientList.ContextMenu = null;
+
+
+            OnButtonStart(null, null);
         }
 
         private void OnClientDisconnected(NebulaClient obj)
@@ -73,8 +78,7 @@ namespace Nebula.Server.WpfGui
             {
                 byte[] hData = File.ReadAllBytes(hDlg.FileName);
 
-                List<NebulaModuleInfo> hModules = hClient.Callback.AddModule(hData);
-                MessageBox.Show(hModules.First().Name + " was installed");
+                NebulaModuleInfo[] hModules = hClient.Callback.AddModule(hData);                
             }
                         
         }
@@ -125,6 +129,14 @@ namespace Nebula.Server.WpfGui
             catch (Exception)
             {
             }            
+        }
+
+        private void OnClientListSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (m_hClientList.SelectedItem == null)
+                m_hClientList.ContextMenu = null;
+            else
+                m_hClientList.ContextMenu = m_hClientContextMenu;
         }
     }
 }

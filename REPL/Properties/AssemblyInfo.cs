@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Nebula.Modules.Embryo")]
+[assembly: AssemblyTitle("REPL")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Nebula.Modules.Embryo")]
+[assembly: AssemblyProduct("REPL")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("692a2bf8-35ac-4938-a9cb-e9c05ed774f5")]
+[assembly: Guid("190f4640-c8ea-4597-8bed-67ee95441f7f")]
 
 // Version information for an assembly consists of the following four values:
 //
