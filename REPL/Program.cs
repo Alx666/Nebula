@@ -21,11 +21,13 @@ namespace REPL
             hOptions = hOptions.AddImports("System.Linq");
             hOptions = hOptions.AddImports("System.Collections.Generic");
 
+            Console.WriteLine("C# Command Shell " + Environment.Version + Environment.NewLine);
+
             while (true)
             {
                 try
                 {
-                    Console.Write("* ");
+                    Console.Write("> ");                    
                     string sCmdLine = Console.ReadLine();
 
                     if (hScriptState == null)

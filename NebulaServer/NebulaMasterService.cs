@@ -27,8 +27,13 @@ namespace Nebula.Server
         {
             m_hClients.Clear();
             m_hHost = new ServiceHost(this, new Uri($"net.tcp://localhost:{iPort}/NebulaMasterService"));
-            NetTcpBinding hBinding = new NetTcpBinding();
-            hBinding.Security.Mode = SecurityMode.None;
+
+            NetTcpBinding hBinding      = new NetTcpBinding();
+            hBinding.Security.Mode      = SecurityMode.None;
+            //hBinding.MaxBufferSize      = 51200;
+            //hBinding.MaxBufferPoolSize  = 0;
+            hBinding.MaxReceivedMessageSize = 2147483647;
+
             m_hHost.AddServiceEndpoint(typeof(INebulaMasterService), hBinding, "");
             m_hHost.Open();
         }

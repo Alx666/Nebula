@@ -48,13 +48,16 @@ namespace Nebula.Shared
         public NebulaMasterServiceCB(string sAddr, int iPort)
         {
             NetTcpBinding                               hBinding    = new NetTcpBinding();
+            //hBinding.MaxBufferPoolSize                              = 0;
+            //hBinding.MaxBufferSize                                  = 51200;
+            hBinding.MaxReceivedMessageSize = 2147483647;
             hBinding.Security.Mode                                  = SecurityMode.None;
             EndpointAddress                             hAddr       = new EndpointAddress($"net.tcp://{sAddr}:{iPort}/NebulaMasterService");
             DuplexChannelFactory<INebulaMasterService>  hFactory    = new DuplexChannelFactory<INebulaMasterService>(typeof(NebulaMasterServiceCB), hBinding, hAddr);
 
             Service                                                 = hFactory.CreateChannel(new InstanceContext(this));
 
-            AppDomain.CurrentDomain.AssemblyResolve                += OnAssemblyResolve;
+            //AppDomain.CurrentDomain.AssemblyResolve                += OnAssemblyResolve;
 
             m_hModules                                              = new List<INebulaModule>();
            
@@ -98,7 +101,7 @@ namespace Nebula.Shared
             {
                 try
                 {                    
-                    hModule.AssemblyInstalled(sFileName, Environment.CurrentDirectory);                    
+                    //hModule.AssemblyInstalled(sFileName, Environment.CurrentDirectory);                    
                     hModule.Start(null);
                     hInstalledModules.Add(hModule.ModuleInfo);
                 }
@@ -125,18 +128,18 @@ namespace Nebula.Shared
         #region private stuff
 
         //TODO: temp code, not used
-        private Assembly OnAssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            Console.WriteLine($"OnAssemblyResolve {sender}");
-            return null;
+        //private Assembly OnAssemblyResolve(object sender, ResolveEventArgs args)
+        //{
+        //    Console.WriteLine($"OnAssemblyResolve {sender}");
+        //    return null;
 
-            //string      sResName = args.Name + ".dll";
-            //Assembly    hThisAssembly = Assembly.GetExecutingAssembly();
-            //using (Stream sInput = hThisAssembly.GetManifestResourceStream(sResName))
-            //{
-            //    return sInput != null ? Assembly.Load(StreamToBytes(sInput)) : null;
-            //}
-        }
+        //    //string      sResName = args.Name + ".dll";
+        //    //Assembly    hThisAssembly = Assembly.GetExecutingAssembly();
+        //    //using (Stream sInput = hThisAssembly.GetManifestResourceStream(sResName))
+        //    //{
+        //    //    return sInput != null ? Assembly.Load(StreamToBytes(sInput)) : null;
+        //    //}
+        //}
 
         //TODO: temp code, not used
         //private static byte[] StreamToBytes(Stream hInput)
@@ -171,7 +174,7 @@ namespace Nebula.Shared
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects).
-                    AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
+                    //AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
