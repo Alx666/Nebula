@@ -12,7 +12,9 @@ namespace Nebula.Shared
 
         void AssemblyInstalled(string sAssemblyFile, string sInstallFolder);
 
-        void Start(IEnumerable<INebulaModule> hEnvironmentModules);
+        void Start(INebulaMasterService hService);
+
+        void RegistrationComplete();
 
         NebulaModuleInfo ModuleInfo { get; }
     }

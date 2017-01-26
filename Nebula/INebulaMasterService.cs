@@ -1,4 +1,5 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.ServiceModel;
 
 namespace Nebula.Shared
 {
@@ -6,9 +7,9 @@ namespace Nebula.Shared
     public interface INebulaMasterService
     {
         [OperationContract]
-        string Execute(int iClientId, string sBinary);
+        void Register(string sMachineInfo, NebulaModuleInfo[] hModules);
 
         [OperationContract]
-        void Register(string sMachineInfo, NebulaModuleInfo[] hModules);
+        void ModuleData(Guid vModuleId, string sData);
     }
 }

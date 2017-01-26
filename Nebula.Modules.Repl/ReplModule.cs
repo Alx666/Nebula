@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 
@@ -18,11 +19,12 @@ namespace Nebula.Modules.Repl
         public NebulaModuleInfo ModuleInfo  { get; private set; }
 
         private Process m_hRepl;
+        private INebulaMasterService m_hOwner;
 
         public ReplModule()
         {
             ModuleInfo      = new NebulaModuleInfo();
-            ModuleInfo.Methods = new NebulaModuleMethod[1];
+            ModuleInfo.Methods = new NebulaModuleMethod[1] { new NebulaModuleMethod() };
             ModuleInfo.Methods[0].MethodName = "SendCodeBlock";
             ModuleInfo.Methods[0].Parameters = new string[] { "sCode" };
             ModuleInfo.Name = "Repl";
@@ -53,26 +55,40 @@ namespace Nebula.Modules.Repl
             }          
         }
 
-        public void Start(IEnumerable<INebulaModule> hEnvironmentModules)
+        public void Start(INebulaMasterService hOwner)
         {
+            m_hOwner = hOwner;
             m_hRepl = new Process();
             m_hRepl.StartInfo.FileName = InstallDirectory + "\\REPL.exe";
             m_hRepl.StartInfo.RedirectStandardInput = true;
             m_hRepl.StartInfo.RedirectStandardOutput = true;
             m_hRepl.StartInfo.RedirectStandardError = true;
             m_hRepl.StartInfo.UseShellExecute = false;
-            m_hRepl.EnableRaisingEvents = true;                        
-            m_hRepl.Start();
+            m_hRepl.EnableRaisingEvents = true;
+            m_hRepl.OutputDataReceived += M_hRepl_OutputDataReceived;
+            m_hRepl.Start();            
+        }
+
+
+        public void RegistrationComplete()
+        {
+            m_hRepl.BeginOutputReadLine();
+        }
+        
+
+        private void M_hRepl_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            m_hOwner.ModuleData(this.ModuleInfo.Guid, e.Data);
         }
 
         private void OnProcessExited(object sender, EventArgs e)
         {
         }
 
-        public string SendCodeBlock(string sCode)
+        public string SendCodeBlock(string[] sCode)
         {
             m_hRepl.StandardInput.Write(sCode);
-            return m_hRepl.StandardOutput.ReadToEnd();
+            return "";
         }
     }
 }

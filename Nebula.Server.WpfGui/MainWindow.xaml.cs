@@ -21,6 +21,7 @@ namespace Nebula.Server.WpfGui
     public partial class MainWindow : Window
     {
         private NebulaMasterService m_hService;
+        private ModuleOutput m_hOutputWindow;
 
         private int m_iCurrentPort;
 
@@ -42,7 +43,6 @@ namespace Nebula.Server.WpfGui
             m_hStatusLabel.Text = "Server Stopped";
 
             m_hClientList.ContextMenu = null;
-
 
             OnButtonStart(null, null);
         }
@@ -114,21 +114,35 @@ namespace Nebula.Server.WpfGui
                     m_hButtonStartLabel.Content      = "Stop";
                     m_hTextPort.IsEnabled            = false;
                     m_hStatusLabel.Text              = "Server Started";
+                    m_hService.ModuleDataReceived += OnModuleDataReceived;
                 }
                 else
                 {
-                    m_hService.Dispose();
+                    m_hService.ModuleDataReceived -= OnModuleDataReceived;
+                    m_hService.Dispose();                    
                     m_hButtonStart.Tag               = null;
                     m_hService.ClientConnected      -= OnClientConnected;
                     m_hService.ClientFaulted        -= OnClientDisconnected;
                     m_hButtonStartLabel.Content      = "Start";
                     m_hTextPort.IsEnabled            = true;
                     m_hStatusLabel.Text              = "Server Stopped";
+                    
                 }
             }
             catch (Exception)
             {
             }            
+        }
+
+        private void OnModuleDataReceived(string obj)
+        {
+            if (m_hOutputWindow == null)
+            {
+                m_hOutputWindow = new ModuleOutput();
+                m_hOutputWindow.Show();
+            }
+
+            m_hOutputWindow.m_hTextBlock.Text += obj;
         }
 
         private void OnClientListSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -146,7 +160,7 @@ namespace Nebula.Server.WpfGui
             object first = m_hClientContextMenu.Items[0];
             object second = m_hClientContextMenu.Items[1];
             object third = m_hClientContextMenu.Items[2];
-            object fourth = m_hClientContextMenu.Items[4];
+            object fourth = m_hClientContextMenu.Items[3];
             m_hClientContextMenu.Items.Clear();
 
             m_hClientContextMenu.Items.Add(first);
@@ -157,8 +171,31 @@ namespace Nebula.Server.WpfGui
 
             foreach (var item in hClient.Modules)
             {
-                m_hClientContextMenu.Items.Add(item);
+                MenuItem hMenuItem = new MenuItem();                
+                hMenuItem.Header = item.Name;
+
+                m_hClientContextMenu.Items.Add(hMenuItem);
+
+                foreach (var method in item.Methods)
+                {
+                    MenuItem hMethodItem = new MenuItem();
+                    hMethodItem.Header = method.MethodName;
+                    hMethodItem.Tag = item;
+                    hMethodItem.Click += HMenuItem_Click1;
+
+                    hMenuItem.Items.Add(hMethodItem);
+                }                                
             }            
         }
+
+        private void HMenuItem_Click1(object sender, RoutedEventArgs e)
+        {
+            NebulaClient hClient = m_hClientList.SelectedItem as NebulaClient;
+            MenuItem item = sender as MenuItem;
+            NebulaModuleInfo hModuleInfo = item.Tag as NebulaModuleInfo;
+
+            string sResult = hClient.Callback.Execute(hModuleInfo.Guid, "SendCodeBlock", new string[] { "int i = 0;" });
+        }
+
     }
 }

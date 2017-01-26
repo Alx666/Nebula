@@ -5,6 +5,7 @@ using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Threading;
+using System.Linq;
 
 namespace Nebula.Server
 {
@@ -17,6 +18,7 @@ namespace Nebula.Server
 
         public event Action<NebulaClient> ClientFaulted;
         public event Action<NebulaClient> ClientConnected;
+        public event Action<string> ModuleDataReceived;
 
         public NebulaMasterService()
         {
@@ -81,6 +83,21 @@ namespace Nebula.Server
             }
         }
 
+
+        //TODO: gestire la sessione, se arriva prima questa chiamata di register (plausibile per moduli mal implementati)
+        public void ModuleData(Guid vId, string sData)
+        {
+            OperationContext hCurrent = OperationContext.Current;
+            INebulaMasterServiceCB hCb = hCurrent.GetCallbackChannel<INebulaMasterServiceCB>();
+
+            NebulaClient hClient;
+            m_hClients.TryGetValue(hCb, out hClient);
+
+            NebulaModuleInfo hModule = hClient.Modules.Where(m => m.Guid == vId).First();
+
+            ModuleDataReceived?.Invoke(sData);
+        }
+
         private void OnFaulted(object sender, EventArgs e)
         {
             INebulaMasterServiceCB hClient = sender as INebulaMasterServiceCB;
@@ -120,10 +137,7 @@ namespace Nebula.Server
             Dispose(true);
         }
 
-        public string Execute(int iClientId, string sBinary)
-        {
-            throw new NotImplementedException();
-        }
+
 
         #endregion
     }

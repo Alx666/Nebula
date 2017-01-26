@@ -69,7 +69,7 @@ namespace Nebula.Shared
             {
                 try
                 {
-                    hModule.Start(null);
+                    hModule.Start(Service);
                     m_hModules.Add(hModule);
                 }
                 catch (Exception)
@@ -78,7 +78,20 @@ namespace Nebula.Shared
                 }
             }
 
-            Service.Register(Environment.MachineName, m_hModules.Select(x => x.ModuleInfo).ToArray());
+            NebulaModuleInfo[] hModuleInfos = m_hModules.Select(x => x.ModuleInfo).ToArray();
+            Service.Register(Environment.MachineName, hModuleInfos);
+
+            foreach (INebulaModule hModule in m_hModules)
+            {
+                try
+                {
+                    hModule.RegistrationComplete();                    
+                }
+                catch (Exception)
+                {
+                    //Skip faulted modules
+                }
+            }
         }
 
 
@@ -102,7 +115,7 @@ namespace Nebula.Shared
                 try
                 {                    
                     hModule.AssemblyInstalled(sFileName, Environment.CurrentDirectory);                    
-                    hModule.Start(null);
+                    hModule.Start(Service);
                     hInstalledModules.Add(hModule.ModuleInfo);
                 }
                 catch (Exception hEx)
@@ -141,7 +154,7 @@ namespace Nebula.Shared
                 {
                     try
                     {
-                        return hMethod.Invoke(hMethod, hParams) as string;
+                        return hMethod.Invoke(hModule, new object[] { hParams }) as string;
                     }
                     catch (Exception hEx)
                     {
