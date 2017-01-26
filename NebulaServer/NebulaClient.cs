@@ -18,5 +18,7 @@ namespace Nebula.Server
         public IPEndPoint   Address     { get; private set; }
 
         public INebulaMasterServiceCB Callback { get; set; }
+
+        public NebulaModuleInfo[] Modules { get; set; }
     }
 }

@@ -103,19 +103,9 @@ namespace Nebula.Modules.Repl.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Nebula_Modules_Repl {
+        internal static byte[] REPL {
             get {
-                object obj = ResourceManager.GetObject("Nebula_Modules_Repl", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] Nebula_Shared {
-            get {
-                object obj = ResourceManager.GetObject("Nebula_Shared", resourceCulture);
+                object obj = ResourceManager.GetObject("REPL", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -206,6 +196,16 @@ namespace Nebula.Modules.Repl.Properties {
         internal static byte[] System_Reflection_Metadata {
             get {
                 object obj = ResourceManager.GetObject("System_Reflection_Metadata", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] System_Runtime_InteropServices_RuntimeInformation {
+            get {
+                object obj = ResourceManager.GetObject("System_Runtime_InteropServices_RuntimeInformation", resourceCulture);
                 return ((byte[])(obj));
             }
         }

@@ -57,19 +57,28 @@ namespace Nebula.Server
         #region ContractOperations
 
 
-        public void Register(string sMachineInfo)
+        public void Register(string sMachineInfo, NebulaModuleInfo[] hModules)
         {
-            OperationContext        hCurrent    = OperationContext.Current;            
-            INebulaMasterServiceCB  hCb         = hCurrent.GetCallbackChannel<INebulaMasterServiceCB>();
-     
-            (hCb as ICommunicationObject).Faulted += OnFaulted;
+            OperationContext hCurrent   = OperationContext.Current;
+            INebulaMasterServiceCB hCb  = hCurrent.GetCallbackChannel<INebulaMasterServiceCB>();
 
-            RemoteEndpointMessageProperty hRemoteProperty = (OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty);            
+            NebulaClient hClient;
+            if (m_hClients.TryGetValue(hCb, out hClient))
+            {
+                hClient.Modules = hModules;
+            }
+            else
+            {     
+                (hCb as ICommunicationObject).Faulted += OnFaulted;
 
-            NebulaClient            hClient               = new NebulaClient(Interlocked.Increment(ref m_iCounter), hCb, sMachineInfo, new IPEndPoint(IPAddress.Parse(hRemoteProperty.Address), hRemoteProperty.Port));
+                RemoteEndpointMessageProperty hRemoteProperty = (OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty);
 
-            m_hClients.TryAdd(hCb, hClient);            
-            ClientConnected?.Invoke(hClient);
+                hClient = new NebulaClient(Interlocked.Increment(ref m_iCounter), hCb, sMachineInfo, new IPEndPoint(IPAddress.Parse(hRemoteProperty.Address), hRemoteProperty.Port));
+                hClient.Modules = hModules;
+
+                m_hClients.TryAdd(hCb, hClient);
+                ClientConnected?.Invoke(hClient);
+            }
         }
 
         private void OnFaulted(object sender, EventArgs e)
@@ -89,9 +98,6 @@ namespace Nebula.Server
         }
 
         #endregion
-
-
-
 
         #region IDisposable Support
 

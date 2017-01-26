@@ -15,5 +15,21 @@ namespace Nebula.Shared
 
         [DataMember]
         public Guid     Guid    { get; set; }
+        
+        [DataMember]
+        public NebulaModuleMethod[] Methods {get; set;}
+
+        public override string ToString() => Name;
     }
+
+    [DataContract]
+    public class NebulaModuleMethod
+    {
+        [DataMember]
+        public string   MethodName;
+
+        [DataMember]
+        public string[] Parameters;
+    }
+
 }

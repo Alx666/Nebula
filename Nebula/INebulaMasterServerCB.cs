@@ -13,6 +13,9 @@ namespace Nebula.Shared
         string RemoveModule(Guid vAssemblyId);        
 
         [OperationContract]
-        NebulaModuleInfo[] ListModules();                  
+        NebulaModuleInfo[] ListModules();
+
+        [OperationContract]
+        string Execute(Guid vId, string sMethodName, string[] hParams);
     }
 }

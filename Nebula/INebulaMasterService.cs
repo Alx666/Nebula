@@ -9,6 +9,6 @@ namespace Nebula.Shared
         string Execute(int iClientId, string sBinary);
 
         [OperationContract]
-        void Register(string sMachineInfo);
+        void Register(string sMachineInfo, NebulaModuleInfo[] hModules);
     }
 }

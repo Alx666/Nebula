@@ -57,8 +57,6 @@ namespace Nebula.Shared
 
             Service                                                 = hFactory.CreateChannel(new InstanceContext(this));
 
-            //AppDomain.CurrentDomain.AssemblyResolve                += OnAssemblyResolve;
-
             m_hModules                                              = new List<INebulaModule>();
            
             IEnumerable<INebulaModule> hModules                     = from  hA in Directory.GetFiles(Environment.CurrentDirectory, "*.dll").SafeSelect(hF => Assembly.UnsafeLoadFrom(hF))
@@ -79,6 +77,8 @@ namespace Nebula.Shared
                     //Skip faulted modules
                 }
             }
+
+            Service.Register(Environment.MachineName, m_hModules.Select(x => x.ModuleInfo).ToArray());
         }
 
 
@@ -101,7 +101,7 @@ namespace Nebula.Shared
             {
                 try
                 {                    
-                    //hModule.AssemblyInstalled(sFileName, Environment.CurrentDirectory);                    
+                    hModule.AssemblyInstalled(sFileName, Environment.CurrentDirectory);                    
                     hModule.Start(null);
                     hInstalledModules.Add(hModule.ModuleInfo);
                 }
@@ -123,6 +123,32 @@ namespace Nebula.Shared
         public string RemoveModule(Guid vAssemblyId)
         {
             return "NotImplemented";
+        }
+
+        public string Execute(Guid vId, string sMethodName, string[] hParams)
+        {
+            INebulaModule hModule = m_hModules.Where(m => m.ModuleInfo.Guid == vId).FirstOrDefault();
+
+            if (hModule == null)
+                return "Module Not Found";
+            else
+            {
+                MethodInfo hMethod = hModule.GetType().GetMethods().Where(m => m.Name == sMethodName).FirstOrDefault();
+
+                if (hMethod == null)
+                    return "Method Not Found";
+                else
+                {
+                    try
+                    {
+                        return hMethod.Invoke(hMethod, hParams) as string;
+                    }
+                    catch (Exception hEx)
+                    {
+                        return hEx.ToString();
+                    }
+                }
+            }
         }
 
         #region private stuff

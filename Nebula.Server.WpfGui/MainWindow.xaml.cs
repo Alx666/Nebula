@@ -138,5 +138,27 @@ namespace Nebula.Server.WpfGui
             else
                 m_hClientList.ContextMenu = m_hClientContextMenu;
         }
+
+        private void OnClientContextMenuOpen(object sender, ContextMenuEventArgs e)
+        {
+            NebulaClient hClient = m_hClientList.SelectedItem as NebulaClient;
+
+            object first = m_hClientContextMenu.Items[0];
+            object second = m_hClientContextMenu.Items[1];
+            object third = m_hClientContextMenu.Items[2];
+            object fourth = m_hClientContextMenu.Items[4];
+            m_hClientContextMenu.Items.Clear();
+
+            m_hClientContextMenu.Items.Add(first);
+            m_hClientContextMenu.Items.Add(second);
+            m_hClientContextMenu.Items.Add(third);
+            m_hClientContextMenu.Items.Add(fourth);
+
+
+            foreach (var item in hClient.Modules)
+            {
+                m_hClientContextMenu.Items.Add(item);
+            }            
+        }
     }
 }

@@ -135,8 +135,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Repl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReplModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nebula\Nebula.Shared.csproj">
@@ -152,38 +152,38 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <EmbeddedResource Include="bin\Release\System.Xml.XPath.XDocument.dll" />
-    <EmbeddedResource Include="bin\Release\System.Xml.XPath.dll" />
-    <EmbeddedResource Include="bin\Release\System.Xml.XmlDocument.dll" />
-    <EmbeddedResource Include="bin\Release\System.Threading.Thread.dll" />
-    <EmbeddedResource Include="bin\Release\System.Text.Encoding.CodePages.dll" />
-    <EmbeddedResource Include="bin\Release\System.Security.Cryptography.X509Certificates.dll" />
-    <EmbeddedResource Include="bin\Release\System.Security.Cryptography.Primitives.dll" />
-    <EmbeddedResource Include="bin\Release\System.Security.Cryptography.Encoding.dll" />
-    <EmbeddedResource Include="bin\Release\System.Security.Cryptography.Algorithms.dll" />
-    <EmbeddedResource Include="bin\Release\System.Reflection.Metadata.dll" />
-    <EmbeddedResource Include="bin\Release\System.IO.FileSystem.Primitives.dll" />
-    <EmbeddedResource Include="bin\Release\System.IO.FileSystem.dll" />
-    <EmbeddedResource Include="bin\Release\System.IO.Compression.dll" />
-    <EmbeddedResource Include="bin\Release\System.Diagnostics.StackTrace.dll" />
-    <EmbeddedResource Include="bin\Release\System.Diagnostics.FileVersionInfo.dll" />
-    <EmbeddedResource Include="bin\Release\System.Console.dll" />
-    <EmbeddedResource Include="bin\Release\System.Collections.Immutable.dll" />
-    <EmbeddedResource Include="bin\Release\System.AppContext.dll" />
-    <EmbeddedResource Include="bin\Release\Nebula.Shared.dll" />
-    <EmbeddedResource Include="bin\Release\Nebula.Modules.Repl.dll" />
-    <EmbeddedResource Include="bin\Release\Microsoft.CodeAnalysis.Scripting.dll" />
-    <EmbeddedResource Include="bin\Release\Microsoft.CodeAnalysis.dll" />
-    <EmbeddedResource Include="bin\Release\Microsoft.CodeAnalysis.CSharp.Scripting.dll" />
-    <EmbeddedResource Include="bin\Release\Microsoft.CodeAnalysis.CSharp.dll" />
-  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Lib\Microsoft.CodeAnalysis.CSharp.dll" />
+    <EmbeddedResource Include="Lib\Microsoft.CodeAnalysis.CSharp.Scripting.dll" />
+    <EmbeddedResource Include="Lib\Microsoft.CodeAnalysis.dll" />
+    <EmbeddedResource Include="Lib\Microsoft.CodeAnalysis.Scripting.dll" />
+    <EmbeddedResource Include="Lib\REPL.exe" />
+    <EmbeddedResource Include="Lib\System.AppContext.dll" />
+    <EmbeddedResource Include="Lib\System.Collections.Immutable.dll" />
+    <EmbeddedResource Include="Lib\System.Console.dll" />
+    <EmbeddedResource Include="Lib\System.Diagnostics.FileVersionInfo.dll" />
+    <EmbeddedResource Include="Lib\System.Diagnostics.StackTrace.dll" />
+    <EmbeddedResource Include="Lib\System.IO.Compression.dll" />
+    <EmbeddedResource Include="Lib\System.IO.FileSystem.dll" />
+    <EmbeddedResource Include="Lib\System.IO.FileSystem.Primitives.dll" />
+    <EmbeddedResource Include="Lib\System.Reflection.Metadata.dll" />
+    <EmbeddedResource Include="Lib\System.Runtime.InteropServices.RuntimeInformation.dll" />
+    <EmbeddedResource Include="Lib\System.Security.Cryptography.Algorithms.dll" />
+    <EmbeddedResource Include="Lib\System.Security.Cryptography.Encoding.dll" />
+    <EmbeddedResource Include="Lib\System.Security.Cryptography.Primitives.dll" />
+    <EmbeddedResource Include="Lib\System.Security.Cryptography.X509Certificates.dll" />
+    <EmbeddedResource Include="Lib\System.Text.Encoding.CodePages.dll" />
+    <EmbeddedResource Include="Lib\System.Threading.Thread.dll" />
+    <EmbeddedResource Include="Lib\System.Xml.XmlDocument.dll" />
+    <EmbeddedResource Include="Lib\System.Xml.XPath.dll" />
+    <EmbeddedResource Include="Lib\System.Xml.XPath.XDocument.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

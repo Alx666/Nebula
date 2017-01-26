@@ -12,9 +12,11 @@ namespace REPL
     class Program
     {
         static void Main(string[] args)
-        {
+        {           
+
             ScriptState<object> hScriptState    = null;
             ScriptOptions       hOptions        = ScriptOptions.Default;
+            
 
             hOptions = hOptions.AddReferences(typeof(System.Object).Assembly, typeof(System.Linq.Enumerable).Assembly);
             hOptions = hOptions.AddImports("System");

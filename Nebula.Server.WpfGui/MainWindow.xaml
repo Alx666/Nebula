@@ -36,7 +36,7 @@
                 <TextBlock Name="m_hStatusLabel"/>
             </StatusBarItem>
         </StatusBar>
-        <ListView x:Name="m_hClientList" Grid.Row="1" SelectionChanged="OnClientListSelectionChanged">
+        <ListView x:Name="m_hClientList" Grid.Row="1" SelectionChanged="OnClientListSelectionChanged" ContextMenuOpening="OnClientContextMenuOpen">
             <ListView.ContextMenu>
                 <ContextMenu Name="m_hClientContextMenu">
                     <MenuItem Header="Add Module"       Click="OnContextMenuAddModule" />
