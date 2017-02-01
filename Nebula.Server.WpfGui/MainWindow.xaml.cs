@@ -15,13 +15,18 @@ using System.Windows.Shapes;
 using Nebula.Server;
 using System.IO;
 using Nebula.Shared;
+using System.Net;
 
 namespace Nebula.Server.WpfGui
-{    
+{
+    internal class NebulaClientWpf : NebulaClient
+    {
+    }
+
     public partial class MainWindow : Window
     {
-        private NebulaMasterService m_hService;
-        private ModuleOutput m_hOutputWindow;
+        private NebulaMasterService<NebulaClientWpf> m_hService;
+        private ReplModuleWindow m_hOutputWindow;
 
         private int m_iCurrentPort;
 
@@ -47,7 +52,7 @@ namespace Nebula.Server.WpfGui
             OnButtonStart(null, null);
         }
 
-        private void OnClientDisconnected(NebulaClient obj)
+        private void OnClientDisconnected(NebulaClientWpf obj)
         {
             Dispatcher.BeginInvoke((Action)(() => 
             {
@@ -56,7 +61,7 @@ namespace Nebula.Server.WpfGui
             }));            
         }
 
-        private void OnClientConnected(NebulaClient obj)
+        private void OnClientConnected(NebulaClientWpf obj)
         {
             Dispatcher.BeginInvoke((Action)(() => 
             {
@@ -105,7 +110,7 @@ namespace Nebula.Server.WpfGui
                 if (m_hButtonStart.Tag == null)
                 {
                     m_iCurrentPort                   = int.Parse(m_hTextPort.Text);
-                    m_hService                       = new NebulaMasterService();
+                    m_hService                       = new NebulaMasterService<NebulaClientWpf>();
                     m_hService.ClientConnected      += OnClientConnected;
                     m_hService.ClientFaulted        += OnClientDisconnected;
 
@@ -134,15 +139,9 @@ namespace Nebula.Server.WpfGui
             }            
         }
 
-        private void OnModuleDataReceived(string obj)
+        private void OnModuleDataReceived(NebulaClientWpf hClient, Guid vModuleId, string hData)
         {
-            if (m_hOutputWindow == null)
-            {
-                m_hOutputWindow = new ModuleOutput();
-                m_hOutputWindow.Show();
-            }
-
-            m_hOutputWindow.m_hTextBlock.Text += obj;
+            m_hOutputWindow.Add(hData);
         }
 
         private void OnClientListSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -194,7 +193,8 @@ namespace Nebula.Server.WpfGui
             MenuItem item = sender as MenuItem;
             NebulaModuleInfo hModuleInfo = item.Tag as NebulaModuleInfo;
 
-            string sResult = hClient.Callback.Execute(hModuleInfo.Guid, "SendCodeBlock", new string[] { "int i = 0;" });
+            m_hOutputWindow = new ReplModuleWindow(hClient, hModuleInfo.Guid);
+            m_hOutputWindow.Show();
         }
 
     }

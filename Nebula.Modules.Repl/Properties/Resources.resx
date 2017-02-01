@@ -119,75 +119,108 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Microsoft_CodeAnalysis" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\Microsoft.CodeAnalysis.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\Microsoft.CodeAnalysis.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Microsoft_CodeAnalysis1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Microsoft.CodeAnalysis.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="Microsoft_CodeAnalysis_CSharp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\Microsoft.CodeAnalysis.CSharp.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\Microsoft.CodeAnalysis.CSharp.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Microsoft_CodeAnalysis_CSharp1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Microsoft.CodeAnalysis.CSharp.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="Microsoft_CodeAnalysis_CSharp_Scripting" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\Microsoft.CodeAnalysis.CSharp.Scripting.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\Microsoft.CodeAnalysis.CSharp.Scripting.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Microsoft_CodeAnalysis_CSharp_Scripting1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Microsoft.CodeAnalysis.CSharp.Scripting.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="Microsoft_CodeAnalysis_Scripting" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\Microsoft.CodeAnalysis.Scripting.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\Microsoft.CodeAnalysis.Scripting.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Microsoft_CodeAnalysis_Scripting1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Microsoft.CodeAnalysis.Scripting.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="REPL" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\REPL.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\REPL.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="REPL1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\REPL.pdb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="REPL_exe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\REPL.exe.config;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="REPL_vshost" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\REPL.vshost.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="REPL_vshost_exe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\REPL.vshost.exe.config;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="REPL_vshost_exe1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\REPL.vshost.exe.manifest;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="System_AppContext" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.AppContext.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.AppContext.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="System_Collections_Immutable" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.Collections.Immutable.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.Collections.Immutable.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="System_Collections_Immutable1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\System.Collections.Immutable.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="System_Console" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.Console.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.Console.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="System_Diagnostics_FileVersionInfo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.Diagnostics.FileVersionInfo.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.Diagnostics.FileVersionInfo.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="System_Diagnostics_StackTrace" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.Diagnostics.StackTrace.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.Diagnostics.StackTrace.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="System_IO_Compression" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.IO.Compression.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.IO.Compression.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="System_IO_FileSystem" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.IO.FileSystem.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.IO.FileSystem.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="System_IO_FileSystem_Primitives" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.IO.FileSystem.Primitives.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.IO.FileSystem.Primitives.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="System_Reflection_Metadata" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.Reflection.Metadata.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.Reflection.Metadata.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="System_Reflection_Metadata1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\System.Reflection.Metadata.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="System_Runtime_InteropServices_RuntimeInformation" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.Runtime.InteropServices.RuntimeInformation.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.Runtime.InteropServices.RuntimeInformation.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="System_Security_Cryptography_Algorithms" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.Security.Cryptography.Algorithms.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.Security.Cryptography.Algorithms.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="System_Security_Cryptography_Encoding" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.Security.Cryptography.Encoding.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.Security.Cryptography.Encoding.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="System_Security_Cryptography_Primitives" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.Security.Cryptography.Primitives.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.Security.Cryptography.Primitives.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="System_Security_Cryptography_X509Certificates" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.Security.Cryptography.X509Certificates.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.Security.Cryptography.X509Certificates.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="System_Text_Encoding_CodePages" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.Text.Encoding.CodePages.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.Text.Encoding.CodePages.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="System_Threading_Thread" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.Threading.Thread.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.Threading.Thread.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="System_Xml_XmlDocument" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.Xml.XmlDocument.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.Xml.XmlDocument.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="System_Xml_XPath" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.Xml.XPath.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.Xml.XPath.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="System_Xml_XPath_XDocument" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Lib\System.Xml.XPath.XDocument.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\System.Xml.XPath.XDocument.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

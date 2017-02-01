@@ -87,7 +87,7 @@ namespace Nebula.Modules.Repl
 
         public string SendCodeBlock(string[] sCode)
         {
-            m_hRepl.StandardInput.Write(sCode);
+            m_hRepl.StandardInput.WriteLine(sCode.First());
             return "";
         }
     }

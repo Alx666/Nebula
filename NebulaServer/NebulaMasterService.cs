@@ -10,19 +10,19 @@ using System.Linq;
 namespace Nebula.Server
 {
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
-    public class NebulaMasterService : INebulaMasterService, IDisposable
+    public class NebulaMasterService<T> : INebulaMasterService, IDisposable where T: NebulaClient, new()
     {
-        private ConcurrentDictionary<INebulaMasterServiceCB, NebulaClient>          m_hClients;
+        private ConcurrentDictionary<INebulaMasterServiceCB, T>                     m_hClients;
         private ServiceHost                                                         m_hHost;
         private static int                                                          m_iCounter;
 
-        public event Action<NebulaClient> ClientFaulted;
-        public event Action<NebulaClient> ClientConnected;
-        public event Action<string> ModuleDataReceived;
+        public event Action<T>           ClientFaulted;
+        public event Action<T>           ClientConnected;
+        public event Action<T, string>   ModuleDataReceived;
 
         public NebulaMasterService()
         {
-            m_hClients = new ConcurrentDictionary<INebulaMasterServiceCB, NebulaClient>();
+            m_hClients = new ConcurrentDictionary<INebulaMasterServiceCB, T>();
         }
 
         public void Start(int iPort)
@@ -64,7 +64,7 @@ namespace Nebula.Server
             OperationContext hCurrent   = OperationContext.Current;
             INebulaMasterServiceCB hCb  = hCurrent.GetCallbackChannel<INebulaMasterServiceCB>();
 
-            NebulaClient hClient;
+            T hClient;
             if (m_hClients.TryGetValue(hCb, out hClient))
             {
                 hClient.Modules = hModules;
@@ -75,8 +75,12 @@ namespace Nebula.Server
 
                 RemoteEndpointMessageProperty hRemoteProperty = (OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty);
 
-                hClient = new NebulaClient(Interlocked.Increment(ref m_iCounter), hCb, sMachineInfo, new IPEndPoint(IPAddress.Parse(hRemoteProperty.Address), hRemoteProperty.Port));
-                hClient.Modules = hModules;
+                hClient             = new T();
+                hClient.Id          = Interlocked.Increment(ref m_iCounter);
+                hClient.Callback    = hCb;
+                hClient.Machine     = sMachineInfo;
+                hClient.Address     = new IPEndPoint(IPAddress.Parse(hRemoteProperty.Address), hRemoteProperty.Port);
+                hClient.Modules     = hModules;
 
                 m_hClients.TryAdd(hCb, hClient);
                 ClientConnected?.Invoke(hClient);
@@ -90,19 +94,19 @@ namespace Nebula.Server
             OperationContext hCurrent = OperationContext.Current;
             INebulaMasterServiceCB hCb = hCurrent.GetCallbackChannel<INebulaMasterServiceCB>();
 
-            NebulaClient hClient;
+            T hClient;
             m_hClients.TryGetValue(hCb, out hClient);
 
             NebulaModuleInfo hModule = hClient.Modules.Where(m => m.Guid == vId).First();
 
-            ModuleDataReceived?.Invoke(sData);
+            ModuleDataReceived?.Invoke(hClient, sData);
         }
 
         private void OnFaulted(object sender, EventArgs e)
         {
             INebulaMasterServiceCB hClient = sender as INebulaMasterServiceCB;
             
-            NebulaClient hRemoved;
+            T hRemoved;
             if (m_hClients.TryRemove(hClient, out hRemoved))
             {
                 ClientFaulted?.Invoke(hRemoved);

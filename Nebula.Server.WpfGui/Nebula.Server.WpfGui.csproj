@@ -67,14 +67,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ModuleOutput.xaml">
+    <Page Include="ReplModuleWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModuleOutput.xaml.cs">
-      <DependentUpon>ModuleOutput.xaml</DependentUpon>
+    <Compile Include="ReplModuleWindow.xaml.cs">
+      <DependentUpon>ReplModuleWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -103,10 +103,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NebulaServer\Nebula.Server.csproj">
-      <Project>{f32ebf2a-505b-4137-a661-b5ef01c17977}</Project>
-      <Name>Nebula.Server</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Nebula\Nebula.Shared.csproj">
       <Project>{1049c72a-0c09-45be-b3d3-59cbe213f8ee}</Project>
       <Name>Nebula.Shared</Name>

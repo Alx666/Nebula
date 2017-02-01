@@ -1,5 +1,6 @@
 ﻿using Nebula.Shared;
 using System;
+using System.Diagnostics;
 using System.ServiceModel;
 
 namespace Nebula.Client
@@ -17,12 +18,14 @@ namespace Nebula.Client
 
         private static void OnClosed(object sender, EventArgs e)
         {
-            Console.WriteLine("Closed");
+            Console.WriteLine("Closed");            
         }
 
         private static void OnFaulted(object sender, EventArgs e)
         {
             Console.WriteLine("Faulted");
+
+            Process.GetCurrentProcess().Close();
         }
     }
 }

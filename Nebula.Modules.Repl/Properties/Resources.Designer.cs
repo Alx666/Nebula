@@ -91,6 +91,47 @@ namespace Nebula.Modules.Repl.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;doc&gt;
+        ///    &lt;assembly&gt;
+        ///        &lt;name&gt;Microsoft.CodeAnalysis.CSharp.Scripting&lt;/name&gt;
+        ///    &lt;/assembly&gt;
+        ///    &lt;members&gt;
+        ///        &lt;member name=&quot;T:Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript&quot;&gt;
+        ///            &lt;summary&gt;
+        ///            A factory for creating and running C# scripts.
+        ///            &lt;/summary&gt;
+        ///        &lt;/member&gt;
+        ///        &lt;member name=&quot;M:Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create``1(System.String,Microsoft.CodeAnalysis.Scripting.ScriptOptions,System.Type,Micros [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Microsoft_CodeAnalysis_CSharp_Scripting1 {
+            get {
+                return ResourceManager.GetString("Microsoft_CodeAnalysis_CSharp_Scripting1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;doc&gt;
+        ///    &lt;assembly&gt;
+        ///        &lt;name&gt;Microsoft.CodeAnalysis.CSharp&lt;/name&gt;
+        ///    &lt;/assembly&gt;
+        ///    &lt;members&gt;
+        ///        &lt;member name=&quot;T:Microsoft.CodeAnalysis.CSharp.Binder&quot;&gt;
+        ///            &lt;summary&gt;
+        ///            A Binder converts names in to symbols and syntax nodes into bound trees. It is context
+        ///            dependent, relative to a location in source code.
+        ///            &lt;/summary&gt;
+        ///            &lt;summary&gt;
+        ///            This portion of the binder converts a AnonymousObjectCreationExpressionSy [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Microsoft_CodeAnalysis_CSharp1 {
+            get {
+                return ResourceManager.GetString("Microsoft_CodeAnalysis_CSharp1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] Microsoft_CodeAnalysis_Scripting {
@@ -101,11 +142,121 @@ namespace Nebula.Modules.Repl.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;doc&gt;
+        ///    &lt;assembly&gt;
+        ///        &lt;name&gt;Microsoft.CodeAnalysis.Scripting&lt;/name&gt;
+        ///    &lt;/assembly&gt;
+        ///    &lt;members&gt;
+        ///        &lt;member name=&quot;M:Microsoft.CodeAnalysis.RelativePathResolver.#ctor(System.Collections.Immutable.ImmutableArray{System.String},System.String)&quot;&gt;
+        ///            &lt;summary&gt;
+        ///            Initializes a new instance of the &lt;see cref=&quot;T:Microsoft.CodeAnalysis.RelativePathResolver&quot;/&gt; class.
+        ///            &lt;/summary&gt;
+        ///            &lt;param name=&quot;searchPaths&quot;&gt;An ordered set of fully quali [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Microsoft_CodeAnalysis_Scripting1 {
+            get {
+                return ResourceManager.GetString("Microsoft_CodeAnalysis_Scripting1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;doc&gt;
+        ///    &lt;assembly&gt;
+        ///        &lt;name&gt;Microsoft.CodeAnalysis&lt;/name&gt;
+        ///    &lt;/assembly&gt;
+        ///    &lt;members&gt;
+        ///        &lt;member name=&quot;T:Microsoft.CodeAnalysis.Diagnostics.AnalyzerManager&quot;&gt;
+        ///            &lt;summary&gt;
+        ///            Manages properties of analyzers (such as registered actions, supported diagnostics) for analyzer host&apos;s lifetime
+        ///            and executes the callbacks into the analyzers.
+        ///            
+        ///            It ensures the following for the lifetime of analyzer host:
+        ///            1)  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Microsoft_CodeAnalysis1 {
+            get {
+                return ResourceManager.GetString("Microsoft_CodeAnalysis1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] REPL {
             get {
                 object obj = ResourceManager.GetObject("REPL", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///&lt;configuration&gt;
+        ///    &lt;startup&gt; 
+        ///        &lt;supportedRuntime version=&quot;v4.0&quot; sku=&quot;.NETFramework,Version=v4.6.1&quot; /&gt;
+        ///    &lt;/startup&gt;
+        ///  &lt;runtime&gt;
+        ///    &lt;assemblyBinding xmlns=&quot;urn:schemas-microsoft-com:asm.v1&quot;&gt;
+        ///      &lt;dependentAssembly&gt;
+        ///        &lt;assemblyIdentity name=&quot;System.IO.Compression&quot; publicKeyToken=&quot;b77a5c561934e089&quot; culture=&quot;neutral&quot; /&gt;
+        ///        &lt;bindingRedirect oldVersion=&quot;0.0.0.0-4.1.0.0&quot; newVersion=&quot;4.1.0.0&quot; /&gt;
+        ///      &lt;/dependentAssembly&gt;
+        ///      &lt;dependentAssem [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string REPL_exe {
+            get {
+                return ResourceManager.GetString("REPL_exe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] REPL_vshost {
+            get {
+                object obj = ResourceManager.GetObject("REPL_vshost", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///&lt;configuration&gt;
+        ///    &lt;startup&gt; 
+        ///        &lt;supportedRuntime version=&quot;v4.0&quot; sku=&quot;.NETFramework,Version=v4.6.1&quot; /&gt;
+        ///    &lt;/startup&gt;
+        ///  &lt;runtime&gt;
+        ///    &lt;assemblyBinding xmlns=&quot;urn:schemas-microsoft-com:asm.v1&quot;&gt;
+        ///      &lt;dependentAssembly&gt;
+        ///        &lt;assemblyIdentity name=&quot;System.IO.Compression&quot; publicKeyToken=&quot;b77a5c561934e089&quot; culture=&quot;neutral&quot; /&gt;
+        ///        &lt;bindingRedirect oldVersion=&quot;0.0.0.0-4.1.0.0&quot; newVersion=&quot;4.1.0.0&quot; /&gt;
+        ///      &lt;/dependentAssembly&gt;
+        ///      &lt;dependentAssem [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string REPL_vshost_exe {
+            get {
+                return ResourceManager.GetString("REPL_vshost_exe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] REPL_vshost_exe1 {
+            get {
+                object obj = ResourceManager.GetObject("REPL_vshost_exe1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] REPL1 {
+            get {
+                object obj = ResourceManager.GetObject("REPL1", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -127,6 +278,27 @@ namespace Nebula.Modules.Repl.Properties {
             get {
                 object obj = ResourceManager.GetObject("System_Collections_Immutable", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;doc&gt;
+        ///    &lt;assembly&gt;
+        ///        &lt;name&gt;System.Collections.Immutable&lt;/name&gt;
+        ///    &lt;/assembly&gt;
+        ///    &lt;members&gt;
+        ///        &lt;member name=&quot;T:System.Collections.Generic.IHashKeyCollection`1&quot;&gt;
+        ///            &lt;summary&gt;
+        ///            Defined on a generic collection that hashes its contents using an &lt;see cref=&quot;T:System.Collections.Generic.IEqualityComparer`1&quot;/&gt;.
+        ///            &lt;/summary&gt;
+        ///            &lt;typeparam name=&quot;TKey&quot;&gt;The type of element hashed in the collection.&lt;/typeparam&gt;
+        ///        &lt;/member&gt;
+        ///      [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string System_Collections_Immutable1 {
+            get {
+                return ResourceManager.GetString("System_Collections_Immutable1", resourceCulture);
             }
         }
         
@@ -197,6 +369,28 @@ namespace Nebula.Modules.Repl.Properties {
             get {
                 object obj = ResourceManager.GetObject("System_Reflection_Metadata", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;doc&gt;
+        ///    &lt;assembly&gt;
+        ///        &lt;name&gt;System.Reflection.Metadata&lt;/name&gt;
+        ///    &lt;/assembly&gt;
+        ///    &lt;members&gt;
+        ///        &lt;member name=&quot;T:System.Reflection.Internal.AbstractMemoryBlock&quot;&gt;
+        ///            &lt;summary&gt;
+        ///            Represents a disposable blob of memory accessed via unsafe pointer.
+        ///            &lt;/summary&gt;
+        ///        &lt;/member&gt;
+        ///        &lt;member name=&quot;P:System.Reflection.Internal.AbstractMemoryBlock.Pointer&quot;&gt;
+        ///            &lt;summary&gt;
+        ///            Pointer to the underlying data (not valid after [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string System_Reflection_Metadata1 {
+            get {
+                return ResourceManager.GetString("System_Reflection_Metadata1", resourceCulture);
             }
         }
         

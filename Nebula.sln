@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Shared", "Nebula\Nebula.Shared.csproj", "{1049C72A-0C09-45BE-B3D3-59CBE213F8EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Server", "NebulaServer\Nebula.Server.csproj", "{F32EBF2A-505B-4137-A661-B5EF01C17977}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Client", "NebulaClient\Nebula.Client.csproj", "{97FCEA28-CA3D-4A93-BCDD-EDBD161C99B9}"
 	ProjectSection(ProjectDependencies) = postProject
 		{CF30983E-DA08-4ADB-9FEA-58E1E50E6FA1} = {CF30983E-DA08-4ADB-9FEA-58E1E50E6FA1}
@@ -30,10 +28,6 @@ Global
 		{1049C72A-0C09-45BE-B3D3-59CBE213F8EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1049C72A-0C09-45BE-B3D3-59CBE213F8EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1049C72A-0C09-45BE-B3D3-59CBE213F8EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F32EBF2A-505B-4137-A661-B5EF01C17977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F32EBF2A-505B-4137-A661-B5EF01C17977}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F32EBF2A-505B-4137-A661-B5EF01C17977}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F32EBF2A-505B-4137-A661-B5EF01C17977}.Release|Any CPU.Build.0 = Release|Any CPU
 		{97FCEA28-CA3D-4A93-BCDD-EDBD161C99B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{97FCEA28-CA3D-4A93-BCDD-EDBD161C99B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97FCEA28-CA3D-4A93-BCDD-EDBD161C99B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
