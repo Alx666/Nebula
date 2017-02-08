@@ -65,34 +65,10 @@ namespace Nebula.Server.WpfGui
             }
             else if (hChange.RemovedLength > 0)
             {                
-                m_hSb.Remove(hChange.Offset, hChange.RemovedLength);
+                m_hSb.Remove(hChange.Offset - 1, hChange.RemovedLength);
             }
         }
     }
-
-    //internal interface ICommandWindowState
-    //{
-    //    ICommandWindowState OnInputChanged(string sText, TextChangedEventArgs e);
-    //}
-
-
-
-    //class StateReceiveOutout : ICommandWindowState
-    //{
-    //    private NebulaClient    m_hClient;
-    //    private StringBuilder   m_hSb;
-    //    private TextBox         m_hTextBox;
-
-    //    public StateReceiveOutout(NebulaClient hClient, TextBox hTextBox)
-    //    {
-    //        m_hSb       = new StringBuilder();
-    //        m_hTextBox  = hTextBox;
-    //    }
-
-    //    public ICommandWindowState OnInputChanged(string sText, TextChangedEventArgs e)
-    //    {            
-    //    }
-    //}
 }
 
 
