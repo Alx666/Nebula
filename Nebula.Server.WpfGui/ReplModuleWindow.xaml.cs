@@ -64,9 +64,9 @@ namespace Nebula.Server.WpfGui
                     m_hSb.Append(sLastInput);
                 }
             }
-            else if (hChange.RemovedLength > 0)
+            else if (hChange.AddedLength > 0)
             {                
-                m_hSb.Remove(hChange.Offset - 1, hChange.RemovedLength);
+                m_hSb.Remove(hChange.Offset, hChange.RemovedLength);
             }
         }
     }
