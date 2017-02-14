@@ -154,7 +154,11 @@ namespace Nebula.Server.WpfGui
 
         private void OnClientContextMenuOpen(object sender, ContextMenuEventArgs e)
         {
+
+
             NebulaClient hClient = m_hClientList.SelectedItem as NebulaClient;
+            if (hClient == null)
+                return;
 
             object first = m_hClientContextMenu.Items[0];
             object second = m_hClientContextMenu.Items[1];
