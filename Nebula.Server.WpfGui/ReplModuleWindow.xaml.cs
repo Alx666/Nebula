@@ -44,6 +44,7 @@ namespace Nebula.Server.WpfGui
         {
             TextChange hChange = e.Changes.First();
 
+
             if (hChange.AddedLength > 0 && hChange.RemovedLength > 0)
             {
                 //Output entered Input
