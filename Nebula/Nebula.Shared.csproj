@@ -51,6 +51,7 @@
     <Compile Include="NebulaMasterServerCB.cs" />
     <Compile Include="NebulaMasterService.cs" />
     <Compile Include="NebulaModuleInfo.cs" />
+    <Compile Include="NebulaModuleOperationAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

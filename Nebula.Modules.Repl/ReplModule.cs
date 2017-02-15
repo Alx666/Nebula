@@ -15,23 +15,19 @@ namespace Nebula.Modules.Repl
     public class ReplModule : INebulaModule
     {
         private const string InstallDirectory = ".\\Lib";
-        public Exception LastError          { get; set; }
         public NebulaModuleInfo ModuleInfo  { get; private set; }
 
-        private Process m_hRepl;
         private INebulaMasterService m_hOwner;
+        private Dictionary<int, Process> m_hProcesses;
+
 
         public ReplModule()
         {
-            ModuleInfo      = new NebulaModuleInfo();
-            ModuleInfo.Methods = new NebulaModuleMethod[1] { new NebulaModuleMethod() };
-            ModuleInfo.Methods[0].MethodName = "SendCodeBlock";
-            ModuleInfo.Methods[0].Parameters = new string[] { "sCode" };
-            ModuleInfo.Name = "Repl";
-            ModuleInfo.Guid = Guid.NewGuid();
+            ModuleInfo          = new NebulaModuleInfo("Repl", "6c6457c0-851b-499a-88f1-912a08952dc4", this);
+            m_hProcesses        = new Dictionary<int, Process>();
         }
 
-        public void AssemblyInstalled(string sAssemblyFile, string sInstallFolder)
+        public void Install()
         {
             Assembly hCurrent = this.GetType().Assembly;
 
@@ -55,40 +51,60 @@ namespace Nebula.Modules.Repl
             }          
         }
 
+        public void UnInstall()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Start(INebulaMasterService hOwner)
         {
-            m_hOwner = hOwner;
-            m_hRepl = new Process();
-            m_hRepl.StartInfo.FileName = InstallDirectory + "\\REPL.exe";
-            m_hRepl.StartInfo.RedirectStandardInput = true;
-            m_hRepl.StartInfo.RedirectStandardOutput = true;
-            m_hRepl.StartInfo.RedirectStandardError = true;
-            m_hRepl.StartInfo.UseShellExecute = false;
-            m_hRepl.EnableRaisingEvents = true;
-            m_hRepl.OutputDataReceived += M_hRepl_OutputDataReceived;
-            m_hRepl.Start();            
+            m_hOwner = hOwner;          
         }
 
 
         public void RegistrationComplete()
         {
-            m_hRepl.BeginOutputReadLine();
         }
         
 
-        private void M_hRepl_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        private void ProcessOutputRedirect(object sender, DataReceivedEventArgs e)
         {
             m_hOwner.ModuleData(this.ModuleInfo.Guid, e.Data);
         }
 
-        private void OnProcessExited(object sender, EventArgs e)
+
+        [NebulaModuleOperation]
+        public int ReplStart()
         {
+            Process hRepl                           = new Process();
+
+            hRepl.StartInfo.FileName                = InstallDirectory + "\\REPL.exe";
+            hRepl.StartInfo.RedirectStandardInput   = true;
+            hRepl.StartInfo.RedirectStandardOutput  = true;
+            hRepl.StartInfo.RedirectStandardError   = true;
+            hRepl.StartInfo.UseShellExecute         = false;
+            hRepl.EnableRaisingEvents               = true;
+            hRepl.OutputDataReceived               += ProcessOutputRedirect;
+            hRepl.Start();
+            hRepl.BeginOutputReadLine();
+
+            m_hProcesses.Add(hRepl.Id, hRepl);
+
+            return hRepl.Id;
         }
 
-        public string SendCodeBlock(string[] sCode)
+        [NebulaModuleOperation]
+        public void ReplCodeBlock(int iId, string sCode)
         {
-            m_hRepl.StandardInput.WriteLine(sCode.First());
-            return "";
+            m_hProcesses[iId].StandardInput.WriteLine(sCode);
         }
+
+        [NebulaModuleOperation]
+        public void ReplStop(int iId)
+        {
+            m_hProcesses[iId].Close();
+            m_hProcesses.Remove(iId);
+        }
+
     }
 }

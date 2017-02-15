@@ -69,7 +69,7 @@ namespace Nebula.Shared
             T hClient;
             if (m_hClients.TryGetValue(hCb, out hClient))
             {
-                hClient.Modules = hModules;
+                hClient.Modules.AddRange(hModules);
             }
             else
             {
@@ -82,7 +82,7 @@ namespace Nebula.Shared
                 hClient.Callback = hCb;
                 hClient.Machine = sMachineInfo;
                 hClient.Address = new IPEndPoint(IPAddress.Parse(hRemoteProperty.Address), hRemoteProperty.Port);
-                hClient.Modules = hModules;
+                hClient.Modules = new List<NebulaModuleInfo>(hModules);
 
                 m_hClients.TryAdd(hCb, hClient);
                 ClientConnected?.Invoke(hClient);

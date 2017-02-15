@@ -7,13 +7,13 @@ namespace Nebula.Shared
     public interface INebulaMasterServiceCB
     {
         [OperationContract]
-        NebulaModuleInfo[] AddModule(byte[] hAssembly);
+        NebulaModuleInfo[] Add(byte[] hAssembly);
 
         [OperationContract]
-        string RemoveModule(Guid vAssemblyId);        
+        void Remove(Guid vAssemblyId);
 
         [OperationContract]
-        NebulaModuleInfo[] ListModules();
+        NebulaModuleInfo[] GetModules();
 
         [OperationContract]
         string Execute(Guid vId, string sMethodName, string[] hParams);

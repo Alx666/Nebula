@@ -8,9 +8,9 @@ namespace Nebula.Shared
 {
     public interface INebulaModule
     {
-        Exception LastError { get; set; }
+        void Install();
 
-        void AssemblyInstalled(string sAssemblyFile, string sInstallFolder);
+        void UnInstall();
 
         void Start(INebulaMasterService hService);
 

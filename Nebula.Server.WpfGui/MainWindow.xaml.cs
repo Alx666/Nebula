@@ -27,12 +27,19 @@ namespace Nebula.Server.WpfGui
     {
         private NebulaMasterService<NebulaClientWpf> m_hService;
         private ReplModuleWindow m_hOutputWindow;
+        private List<MenuItem> m_hNebulaModuleControlHandles;
 
         private int m_iCurrentPort;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            m_hNebulaModuleControlHandles = new List<MenuItem>();
+            m_hNebulaModuleControlHandles.Add(m_hClientContextMenu.Items[0] as MenuItem);
+            m_hNebulaModuleControlHandles.Add(m_hClientContextMenu.Items[1] as MenuItem);
+            m_hNebulaModuleControlHandles.Add(m_hClientContextMenu.Items[2] as MenuItem);
+            m_hNebulaModuleControlHandles.Add(m_hClientContextMenu.Items[3] as MenuItem);
 
             try
             {
@@ -83,7 +90,9 @@ namespace Nebula.Server.WpfGui
             {
                 byte[] hData = File.ReadAllBytes(hDlg.FileName);
 
-                NebulaModuleInfo[] hModules = hClient.Callback.AddModule(hData);                
+                NebulaModuleInfo[] hModules = hClient.Callback.Add(hData);
+
+                hClient.Modules.AddRange(hModules);
             }
                         
         }
@@ -92,14 +101,14 @@ namespace Nebula.Server.WpfGui
         {
             NebulaClient hClient = m_hClientList.SelectedItem as NebulaClient;
 
-            hClient.Callback.RemoveModule(Guid.NewGuid());
+            hClient.Callback.Remove(Guid.NewGuid());
         }
 
         private void OnContextMenuListModules(object sender, RoutedEventArgs e)
         {
             NebulaClient hClient = m_hClientList.SelectedItem as NebulaClient;
 
-            hClient.Callback.ListModules();
+            hClient.Callback.GetModules();
         }
 
 
@@ -154,44 +163,48 @@ namespace Nebula.Server.WpfGui
 
         private void OnClientContextMenuOpen(object sender, ContextMenuEventArgs e)
         {
-
-
             NebulaClient hClient = m_hClientList.SelectedItem as NebulaClient;
             if (hClient == null)
                 return;
 
-            object first = m_hClientContextMenu.Items[0];
-            object second = m_hClientContextMenu.Items[1];
-            object third = m_hClientContextMenu.Items[2];
-            object fourth = m_hClientContextMenu.Items[3];
+            //Detach previous event handlers
+            foreach (Control hItem in m_hClientContextMenu.Items)
+            {
+                if (hItem is MenuItem)
+                {
+                    foreach (MenuItem hServerItem in (hItem as MenuItem).Items)
+                    {
+                        hServerItem.Click -= ServerMenuItemClick;
+                    }
+                }                                                   
+            }
+
+            //Clear the menu
             m_hClientContextMenu.Items.Clear();
 
-            m_hClientContextMenu.Items.Add(first);
-            m_hClientContextMenu.Items.Add(second);
-            m_hClientContextMenu.Items.Add(third);
-            m_hClientContextMenu.Items.Add(fourth);
+            //Fill It Again
+            m_hNebulaModuleControlHandles.ForEach(x => m_hClientContextMenu.Items.Add(x));
 
-
-            foreach (var item in hClient.Modules)
+            foreach (NebulaModuleInfo hModuleInfo in hClient.Modules)
             {
                 MenuItem hMenuItem = new MenuItem();                
-                hMenuItem.Header = item.Name;
+                hMenuItem.Header = hModuleInfo.Name;
 
                 m_hClientContextMenu.Items.Add(hMenuItem);
 
-                foreach (var method in item.Methods)
+                foreach (NebulaModuleMethod hMethod in hModuleInfo.Methods)
                 {
-                    MenuItem hMethodItem = new MenuItem();
-                    hMethodItem.Header = method.MethodName;
-                    hMethodItem.Tag = item;
-                    hMethodItem.Click += HMenuItem_Click1;
+                    MenuItem hMethodItem    = new ServerMenuItem();
+                    hMethodItem.Header      = hMethod.Name;
+                    hMethodItem.Tag         = hModuleInfo;
+                    hMethodItem.Click      += ServerMenuItemClick;
 
                     hMenuItem.Items.Add(hMethodItem);
                 }                                
             }            
         }
 
-        private void HMenuItem_Click1(object sender, RoutedEventArgs e)
+        private void ServerMenuItemClick(object sender, RoutedEventArgs e)
         {
             NebulaClient hClient = m_hClientList.SelectedItem as NebulaClient;
             MenuItem item = sender as MenuItem;

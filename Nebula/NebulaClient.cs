@@ -9,12 +9,14 @@ namespace Nebula.Shared
 {
     public class NebulaClient
     {
-        public int Id { get; set; }
-        public string Machine { get; set; }
-        public IPEndPoint Address { get; set; }
+        public int Id                           { get; set; }
 
-        public INebulaMasterServiceCB Callback { get; set; }
+        public string Machine                   { get; set; }
 
-        public NebulaModuleInfo[] Modules { get; set; }
+        public IPEndPoint Address               { get; set; }
+
+        public INebulaMasterServiceCB Callback  { get; set; }
+
+        public List<NebulaModuleInfo> Modules   { get; set; }
     }
 }

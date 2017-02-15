@@ -95,7 +95,7 @@ namespace Nebula.Shared
         }
 
 
-        public NebulaModuleInfo[] AddModule(byte[] hAssembly)
+        public NebulaModuleInfo[] Add(byte[] hAssembly)
         {
             string sFileName = Guid.NewGuid().ToString() + ".dll";
 
@@ -114,13 +114,13 @@ namespace Nebula.Shared
             {
                 try
                 {                    
-                    hModule.AssemblyInstalled(sFileName, Environment.CurrentDirectory);                    
+                    hModule.Install();                    
                     hModule.Start(Service);
                     hInstalledModules.Add(hModule.ModuleInfo);
                 }
                 catch (Exception hEx)
                 {
-                    hModule.LastError = hEx;
+                    throw hEx;
                 }               
             }
 
@@ -128,14 +128,14 @@ namespace Nebula.Shared
             return hInstalledModules.ToArray();
         }
 
-        public NebulaModuleInfo[] ListModules()
+        public NebulaModuleInfo[] GetModules()
         {
             return m_hModules.Select(hM => hM.ModuleInfo).ToArray();
         }
 
-        public string RemoveModule(Guid vAssemblyId)
+        public void Remove(Guid vAssemblyId)
         {
-            return "NotImplemented";
+            throw new NotImplementedException();
         }
 
         public string Execute(Guid vId, string sMethodName, string[] hParams)
