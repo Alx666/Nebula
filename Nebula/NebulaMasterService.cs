@@ -15,8 +15,8 @@ namespace Nebula.Shared
     public class NebulaMasterService<T> : INebulaMasterService, IDisposable where T : NebulaClient, new()
     {
         private ConcurrentDictionary<INebulaMasterServiceCB, T> m_hClients;
-        private ServiceHost                                     m_hHost;
-        private static int                                      m_iCounter;
+        private ServiceHost m_hHost;
+        private static int m_iCounter;
 
         public event Action<T> ClientFaulted;
         public event Action<T> ClientConnected;
