@@ -12,23 +12,22 @@ using System.Threading.Tasks;
 namespace Nebula.Core
 {
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
-    public class Node : INode, IDisposable
+    public class Node : INode, INodeCallback, IDisposable
     {
         public IPEndPoint LocalEndPoint { get; private set; }
 
+        private ConcurrentDictionary<INode,         IPEndPoint> m_hNodes;
+        private ConcurrentDictionary<INodeCallback, IPEndPoint> m_hNodesCallback;
 
-        private ConcurrentDictionary<INode, IPEndPoint> m_hNodes;
         private ServiceHost m_hHost;
-        private static int m_iCounter;
 
         public event Action<IPEndPoint> NodeFaulted;
         public event Action<IPEndPoint> NodeConnected;
 
-
-
         public Node()
         {
-            m_hNodes = new ConcurrentDictionary<INode, IPEndPoint>();
+            m_hNodes            = new ConcurrentDictionary<INode, IPEndPoint>();
+            m_hNodesCallback    = new ConcurrentDictionary<INodeCallback, IPEndPoint>();
         }
 
         public void Start(int iPort)
@@ -70,7 +69,7 @@ namespace Nebula.Core
         /// <returns></returns>
         public IPEndPoint[] EnumerateNodes()
         {
-            return m_hNodes.Values.ToArray();
+            return m_hNodes.Values.Union(m_hNodesCallback.Values).ToArray();
         }
 
 
@@ -83,23 +82,24 @@ namespace Nebula.Core
         {
             NetTcpBinding hBinding                  = new NetTcpBinding();
             hBinding.Security.Mode                  = SecurityMode.None;
-            EndpointAddress hAddr                   = new EndpointAddress($"net.tcp://{sKnowAddr}:{iPort}/NebulaNode");
-            DuplexChannelFactory<INode> hFactory    = new DuplexChannelFactory<INode>(typeof(INodeCallback), hBinding, hAddr);
+            DuplexChannelFactory<INode> hFactory    = new DuplexChannelFactory<INode>(typeof(Node), hBinding);
             InstanceContext hContext                = new InstanceContext(this);
-            INode hNetworkNode                      = hFactory.CreateChannel(hContext);
 
-            if (!m_hNodes.TryAdd(hNetworkNode, new IPEndPoint(IPAddress.Parse(sKnowAddr), iPort)))
+            INode hFirstNode                        = hFactory.CreateChannel(hContext, new EndpointAddress($"net.tcp://{sKnowAddr}:{iPort}/NebulaNode"));
+
+            if (!m_hNodes.TryAdd(hFirstNode, new IPEndPoint(IPAddress.Parse(sKnowAddr), iPort)))
                 throw new Exception("Could Not Connect to the Node");
 
-            IPEndPoint[] hResult = hNetworkNode.Join(5);
+            //Get back some addresses
+            IPEndPoint[] hResult = hFirstNode.Join(5) ?? new IPEndPoint[0];
 
             //TODO: deferred network connection, for now just connect to the other existing nodes
             foreach (IPEndPoint hRemoteEndPoint in hResult)
             {
-                hNetworkNode = hFactory.CreateChannel(hContext, new EndpointAddress($"net.tcp://{hRemoteEndPoint.Address.ToString()}:{hRemoteEndPoint.Port}/NebulaNode"));
-                hNetworkNode.Join(0);
+                INode hNewNode = hFactory.CreateChannel(hContext, new EndpointAddress($"net.tcp://{hRemoteEndPoint.Address.ToString()}:{hRemoteEndPoint.Port}/NebulaNode"));
+                hNewNode.Join(0);
 
-                m_hNodes.TryAdd(hNetworkNode, new IPEndPoint(IPAddress.Parse(sKnowAddr), iPort));                    
+                m_hNodes.TryAdd(hNewNode, hRemoteEndPoint);                    
             }
 
             return hResult;
@@ -107,16 +107,16 @@ namespace Nebula.Core
 
         
 
+        //TODO: security (iMaxPeers very big)
         public IPEndPoint[] Join(int iMaxPeers)
         {
-            INode hCb               = OperationContext.Current.GetCallbackChannel<INode>();
-            IPEndPoint[] hResult    = m_hNodes.Values.Take(iMaxPeers).ToArray();
+            INodeCallback   hCb             = OperationContext.Current.GetCallbackChannel<INodeCallback>();
+            IPEndPoint      hRemoteEndPoint = OperationContext.Current.GetRemoteEndPoint();            
+            IPEndPoint[]    hResult         = m_hNodes.Values.ToArray();                                        //get only accessible addresses
 
-            //(hCb as ICommunicationObject).Faulted += OnFaulted;
+            (hCb as ICommunicationObject).Faulted += OnFaulted;
 
-            IPEndPoint hRemoteEndPoint = OperationContext.Current.GetRemoteEndPoint();
-
-            if (m_hNodes.TryAdd(hCb, hRemoteEndPoint))
+            if (m_hNodesCallback.TryAdd(hCb, hRemoteEndPoint))
             {
                 NodeConnected?.Invoke(hRemoteEndPoint);
                 return hResult;
@@ -125,6 +125,10 @@ namespace Nebula.Core
                 return null;
         }
 
+
+        public void PlaceHolder()
+        {
+        }
 
         private void OnFaulted(object sender, EventArgs e)
         {
