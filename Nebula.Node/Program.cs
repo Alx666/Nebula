@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Nebula.Core;
-using Nebula.Node.UI;
 using System.Threading;
 
 namespace Nebula.Node
@@ -13,11 +12,23 @@ namespace Nebula.Node
     {
         static void Main(string[] args)
         {
-            NodeInstance hInstance  = new NodeInstance();
-            ConsoleUI hConsole      = new ConsoleUI(hInstance, "Nebula Node");            
+            try
+            {
+                NodeInstance hInstance = new NodeInstance();
+                int iPort;
+                if (args.Length > 0 && int.TryParse(args[0], out iPort))
+                {
+                    hInstance.Start(iPort);
+                }
+                 
+                ConsoleUI hConsole = new ConsoleUI(hInstance, "Nebula Node");
 
-            hConsole.Run();
-            Thread.CurrentThread.Join();
+                hConsole.Run();
+                Thread.CurrentThread.Join();
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }

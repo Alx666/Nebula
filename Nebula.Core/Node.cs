@@ -19,7 +19,8 @@ namespace Nebula.Core
         private ConcurrentDictionary<INode,         IPEndPoint> m_hNodes;
         private ConcurrentDictionary<INodeCallback, IPEndPoint> m_hNodesCallback;
 
-        private ServiceHost m_hHost;
+        private ServiceHost     m_hHost;
+        private IMasterServer   m_hMs;
 
         public event Action<IPEndPoint> NodeFaulted;
         public event Action<IPEndPoint> NodeConnected;
@@ -45,6 +46,11 @@ namespace Nebula.Core
 
             m_hHost.AddServiceEndpoint(typeof(INode), hBinding, "");
             m_hHost.Open();
+
+
+            ChannelFactory<IMasterServer> hMsFactory = new ChannelFactory<IMasterServer>(hBinding);
+            m_hMs = hMsFactory.CreateChannel(new EndpointAddress($"net.tcp://37.187.154.24:40000/NebulaMasterServer"));
+            m_hMs.Register();
         }
 
         public void Stop()

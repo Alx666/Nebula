@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 
-namespace Nebula.Node.UI
+namespace Nebula.Core
 {
 
     //Todo: throw non critical exceptions for base-derived defined methods with same signature

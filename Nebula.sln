@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Shared", "Nebula\Nebula.Shared.csproj", "{1049C72A-0C09-45BE-B3D3-59CBE213F8EE}"
 EndProject
@@ -12,8 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Client", "NebulaClie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Server.WpfGui", "Nebula.Server.WpfGui\Nebula.Server.WpfGui.csproj", "{ABCD6501-F587-4FFB-A6F8-3E8653EA431E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Service", "Nebula.Service\Nebula.Service.csproj", "{32052B33-44B3-4FDC-B17B-E311571FD370}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REPL", "REPL\REPL.csproj", "{190F4640-C8EA-4597-8BED-67EE95441F7F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Modules.Repl", "Nebula.Modules.Repl\Nebula.Modules.Repl.csproj", "{CF30983E-DA08-4ADB-9FEA-58E1E50E6FA1}"
@@ -21,6 +19,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Core", "Nebula.Core\Nebula.Core.csproj", "{2B92DA38-07A6-46B0-941C-05E316040C1A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Node", "Nebula.Node\Nebula.Node.csproj", "{E35D7184-A5CC-4D93-AB7B-097982CD45DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.MasterServer", "Nebula.MasterServer\Nebula.MasterServer.csproj", "{F556B9DA-EEAA-4ACF-9D15-E4E8E3F5C35C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,10 +40,6 @@ Global
 		{ABCD6501-F587-4FFB-A6F8-3E8653EA431E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABCD6501-F587-4FFB-A6F8-3E8653EA431E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABCD6501-F587-4FFB-A6F8-3E8653EA431E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{32052B33-44B3-4FDC-B17B-E311571FD370}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{32052B33-44B3-4FDC-B17B-E311571FD370}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{32052B33-44B3-4FDC-B17B-E311571FD370}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{32052B33-44B3-4FDC-B17B-E311571FD370}.Release|Any CPU.Build.0 = Release|Any CPU
 		{190F4640-C8EA-4597-8BED-67EE95441F7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{190F4640-C8EA-4597-8BED-67EE95441F7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{190F4640-C8EA-4597-8BED-67EE95441F7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -60,6 +56,10 @@ Global
 		{E35D7184-A5CC-4D93-AB7B-097982CD45DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E35D7184-A5CC-4D93-AB7B-097982CD45DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E35D7184-A5CC-4D93-AB7B-097982CD45DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F556B9DA-EEAA-4ACF-9D15-E4E8E3F5C35C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F556B9DA-EEAA-4ACF-9D15-E4E8E3F5C35C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F556B9DA-EEAA-4ACF-9D15-E4E8E3F5C35C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F556B9DA-EEAA-4ACF-9D15-E4E8E3F5C35C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

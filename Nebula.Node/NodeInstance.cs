@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Nebula.Node.UI;
 using System.Net;
+using Nebula.Core;
 
 namespace Nebula.Node
 {
