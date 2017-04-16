@@ -87,6 +87,13 @@ namespace Nebula.Core
             m_hKeyboardThread.Start();
         }
 
+        public void RunAndWait()
+        {
+            m_hKeyboardThread = new Thread(new ThreadStart(KeyboardHandlerThread));
+            m_hKeyboardThread.Start();
+            Thread.CurrentThread.Join(); //famola zozza
+        }
+
         public void Stop()
         {
             m_hKeyboardThread.Abort();

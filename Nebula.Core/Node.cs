@@ -11,62 +11,30 @@ using System.Threading.Tasks;
 
 namespace Nebula.Core
 {
-    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
-    public class Node : INode, INodeCallback, IDisposable
+    public class Node : Service<INode>, INode, INodeCallback, IDisposable
     {
-        public IPEndPoint LocalEndPoint { get; private set; }
-
         private ConcurrentDictionary<INode,         IPEndPoint> m_hNodes;
-        private ConcurrentDictionary<INodeCallback, IPEndPoint> m_hNodesCallback;
-
-        private ServiceHost     m_hHost;
-        private IMasterServer   m_hMs;
+        private ConcurrentDictionary<INodeCallback, IPEndPoint> m_hNodesCallback;        
+        private IMasterServer                                   m_hMs;
 
         public event Action<IPEndPoint> NodeFaulted;
         public event Action<IPEndPoint> NodeConnected;
 
-        public Node()
+        public Node() : base("NebulaNode")
         {
             m_hNodes            = new ConcurrentDictionary<INode, IPEndPoint>();
             m_hNodesCallback    = new ConcurrentDictionary<INodeCallback, IPEndPoint>();
         }
 
-        public void Start(int iPort)
+        public override void Start(int iPort)
         {
-            LocalEndPoint = new IPEndPoint(IPAddress.Loopback, iPort);
-
-            m_hNodes.Clear();
-            m_hHost = new ServiceHost(this, new Uri($"net.tcp://localhost:{iPort}/NebulaNode"));
-
-            NetTcpBinding hBinding = new NetTcpBinding();
-            hBinding.Security.Mode = SecurityMode.None;
-            //hBinding.MaxBufferSize      = 51200;
-            //hBinding.MaxBufferPoolSize  = 0;
-            //hBinding.MaxReceivedMessageSize = 2147483647;
-
-            m_hHost.AddServiceEndpoint(typeof(INode), hBinding, "");
-            m_hHost.Open();
-
-
-            ChannelFactory<IMasterServer> hMsFactory = new ChannelFactory<IMasterServer>(hBinding);
-            m_hMs = hMsFactory.CreateChannel(new EndpointAddress($"net.tcp://37.187.154.24:40000/NebulaMasterServer"));
-            m_hMs.Register();
+            base.Start(iPort);           
         }
 
-        public void Stop()
+        public override void Stop()
         {
-            try
-            {
-                m_hHost.Close();
-            }
-            catch (Exception)
-            {
-            }
-            finally
-            {
-                m_hHost = null;
-                m_hNodes.Clear();
-            }
+            base.Stop();
+            m_hNodes.Clear();
         }
 
         /// <summary>
