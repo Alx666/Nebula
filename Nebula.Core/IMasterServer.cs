@@ -8,16 +8,9 @@ using System.Threading.Tasks;
 
 namespace Nebula.Core
 {
-    [ServiceContract]
-    public interface IMasterServer
+    [ServiceContract(CallbackContract = typeof(INodeCallback))]
+    public interface IMasterServer : IBaseService
     {
-        [OperationContract(IsOneWay = true)]
-        void Register();
 
-        [OperationContract]
-        IPEndPoint[] GetKnownNodes(int iAmmount);
-
-        [OperationContract]
-        int GetNodesCount();
     }
 }

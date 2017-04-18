@@ -9,16 +9,9 @@ using System.Net;
 namespace Nebula.Core
 {
     [ServiceContract(CallbackContract = typeof(INodeCallback))]
-    public interface INode
+    public interface INode : IBaseService
     {
         [OperationContract]
-        IPEndPoint[] Join(int iMaxPeers);
-        //[OperationContract(AsyncPattern = true)]
-        //IAsyncResult BeginJoin(string sKnownAddress, int iPort, AsyncCallback hCb);
-
-        //[OperationContract]
-        //string[] EndJoin(IAsyncResult hRes);
-
-  
+        void CustomServiceLogic();
     }
 }

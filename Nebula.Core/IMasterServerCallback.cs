@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Nebula.Core
-{    
-    public interface INodeCallback : IBaseService
+{
+    public interface IMasterServerCallback : IBaseService
     {
-        [OperationContract]
-        void CustomCallbackLogic();
+        void Placeholder();
     }
 }

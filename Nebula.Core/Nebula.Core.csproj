@@ -42,12 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleUI.cs" />
+    <Compile Include="IBaseService.cs" />
     <Compile Include="IMasterServer.cs" />
+    <Compile Include="IMasterServerCallback.cs" />
     <Compile Include="INode.cs" />
     <Compile Include="INodeCallback.cs" />
     <Compile Include="Master.cs" />
     <Compile Include="Node.cs" />
-    <Compile Include="OperationContextExtensions.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service.cs" />
   </ItemGroup>

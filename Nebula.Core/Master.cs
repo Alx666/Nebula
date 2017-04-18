@@ -6,7 +6,7 @@ using System.ServiceModel;
 
 namespace Nebula.Core
 {
-    public class Master : Service<IMasterServer>
+    public class Master : Service<IMasterServer, IMasterServerCallback>
     {
         private ConcurrentBag<IPEndPoint>   m_hEndpoints; 
 
