@@ -10,6 +10,6 @@ namespace Nebula.Core
     public interface INodeCallback : IBaseService
     {
         [OperationContract]
-        void CustomCallbackLogic();
+        string SendQuery(string sString);
     }
 }

@@ -12,6 +12,6 @@ namespace Nebula.Core
     public interface INode : IBaseService
     {
         [OperationContract]
-        void CustomServiceLogic();
+        string SendQuery(string sString);
     }
 }

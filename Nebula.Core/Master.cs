@@ -21,15 +21,8 @@ namespace Nebula.Core
             return m_hEndpoints.Take(iAmmount).ToArray();
         }
 
-        [ConsoleUIMethod]
-        public int GetNodesCount()
-        {
-            return m_hEndpoints.Count;
-        }
 
-        public void Register()
-        {
-            m_hEndpoints.Add(OperationContext.Current.GetRemoteEndPoint());
-        }
+
+
     }
 }

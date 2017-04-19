@@ -19,7 +19,5 @@ namespace Nebula.Core
 
         [OperationContract]
         IPEndPoint[] GetNodes(int iMaxNodes, IPEndPoint[] hExcludes);
-
-
     }
 }

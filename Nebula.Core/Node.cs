@@ -17,14 +17,21 @@ namespace Nebula.Core
         {
         }
 
-        public void CustomCallbackLogic()
+        public string SendQuery(string sString)
         {
-            throw new NotImplementedException();
+
+            return sString;
         }
 
-        public void CustomServiceLogic()
+        [ConsoleUIMethod]
+        public string SendQueryAtClient(int iIndex, string sString)
         {
-            throw new NotImplementedException();
+            IBaseService hBase = m_hChannels.ToArray()[iIndex].Value;
+
+            if (hBase is INode n)
+                return n.SendQuery("Contract Call: " + sString);
+            else
+                return (hBase as INodeCallback).SendQuery("Callback Call: " + sString);            
         }
     }
 

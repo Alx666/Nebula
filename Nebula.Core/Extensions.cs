@@ -11,12 +11,7 @@ namespace Nebula.Core
 {
     static class Extensions
     {
-        public static IPEndPoint GetRemoteEndPoint(this OperationContext hContext)
-        {
-            RemoteEndpointMessageProperty hEndPointProp = OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
 
-            return new IPEndPoint(IPAddress.Parse(hEndPointProp.Address), hEndPointProp.Port);
-        }
 
         public static void Shuffle<T>(this IList<T> list)
         {

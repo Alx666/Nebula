@@ -20,22 +20,16 @@ namespace Nebula.Core
         private string                                              m_sUriAppend;
         private InstanceContext                                     m_hContext;
 
-        //Todo: create an adapter to handle both inbound & outbound messages (class ServicePair?)
-        private ConcurrentDictionary<TIService, IPEndPoint>         m_hNodes;
-        private ConcurrentDictionary<TIServiceCallback, IPEndPoint> m_hNodesCallback;
-        private ConcurrentDictionary<IPEndPoint, IBaseService>      m_hChannels;
-
-        private BlockingCollection<IPEndPoint>                      m_hAvaiableNodes;
+        protected ConcurrentDictionary<IPEndPoint, IBaseService>    m_hChannels;
+        private BlockingCollection<IPEndPoint>                      m_hTryConnect;
         private Task                                                m_hConnectionTask;
 
         protected Service(string sUriAppenName)
         {
-            m_sUriAppend        = sUriAppenName;
-            m_hContext          = new InstanceContext(this);
-            m_hNodes            = new ConcurrentDictionary<TIService, IPEndPoint>();
-            m_hNodesCallback    = new ConcurrentDictionary<TIServiceCallback, IPEndPoint>();
-            m_hAvaiableNodes    = new BlockingCollection<IPEndPoint>();
-            m_hChannels         = new ConcurrentDictionary<IPEndPoint, IBaseService>();
+            m_sUriAppend            = sUriAppenName;
+            m_hContext              = new InstanceContext(this);
+            m_hTryConnect           = new BlockingCollection<IPEndPoint>();
+            m_hChannels             = new ConcurrentDictionary<IPEndPoint, IBaseService>();
         }
 
 
@@ -48,8 +42,7 @@ namespace Nebula.Core
             hBinding.Security.Mode  = SecurityMode.None;
 
             m_hHost.AddServiceEndpoint(typeof(TIService), hBinding, string.Empty);
-            m_hHost.Open();
-            //(m_hHost.ChannelDispatchers[0] as ChannelDispatcher).ChannelInitializers.Add(this);
+            m_hHost.Open();            
 
             m_hConnectionTask       = new Task(ConnectionTask, TaskCreationOptions.LongRunning);
             m_hConnectionTask.Start();
@@ -71,15 +64,10 @@ namespace Nebula.Core
             }
         }
 
-        //public void Initialize(IClientChannel hChannel)
-        //{
-            
-        //}
-
         [ConsoleUIMethod]
         public void Connect(string sKnowAddr, int iPort)
         {
-            m_hAvaiableNodes.Add(new IPEndPoint(IPAddress.Parse(sKnowAddr), iPort));         
+            m_hTryConnect.Add(new IPEndPoint(IPAddress.Parse(sKnowAddr), iPort));         
         }
 
         private void ConnectionTask()
@@ -87,32 +75,62 @@ namespace Nebula.Core
             NetTcpBinding hBinding                      = new NetTcpBinding();
             hBinding.Security.Mode                      = SecurityMode.None;
             DuplexChannelFactory<TIService> hFactory    = new DuplexChannelFactory<TIService>(this.GetType(), hBinding);
-            Dictionary<IPEndPoint, TIService> hFilter   = new Dictionary<IPEndPoint, TIService>();
 
             while (true)
             {
-                IPEndPoint hCurrent             = m_hAvaiableNodes.Take();
+                try
+                {
+                    IPEndPoint hCurrent = m_hTryConnect.Take();
 
-                if (m_hChannels.ContainsKey(hCurrent))
-                    continue;
+                    if (m_hChannels.ContainsKey(hCurrent))
+                        continue;
 
-                TIService hNewNode              = hFactory.CreateChannel(m_hContext, new EndpointAddress($"net.tcp://{hCurrent.Address}:{hCurrent.Port}/{m_sUriAppend}"));
+                    TIService hNewNode      = hFactory.CreateChannel(m_hContext, new EndpointAddress($"net.tcp://{hCurrent.Address}:{hCurrent.Port}/{m_sUriAppend}"));
 
-                hNewNode.Notify(LocalEndPoint.Port).ToList().ForEach(a => m_hAvaiableNodes.Add(a));
+                    using (OperationContextScope hScope = new OperationContextScope(hNewNode as IContextChannel))
+                    {
+                        OperationContextEx.Current.ListenerEndPoint = hCurrent;
+                    }
 
-                m_hChannels.TryAdd(hCurrent, hNewNode);
+                    (hNewNode as ICommunicationObject).Faulted  += OnChannelTerminated;
+                    (hNewNode as ICommunicationObject).Closed   += OnChannelTerminated;
+
+                    m_hChannels.TryAdd(hCurrent, hNewNode);
+
+                    hNewNode.Notify(LocalEndPoint.Port).ToList().ForEach(a => m_hTryConnect.Add(a));
+                }
+                catch (Exception)
+                {
+                    //Don't crash the thread, event handler will take care of the bad channel
+                }
             }
+        }
+
+        private void OnChannelTerminated(object sender, EventArgs e)
+        {
+            //IBaseService hService = sender as IBaseService;
+
+            //if (m_hChannels.TryRemove(hService.RemoteEndPoint, out hService))
+            //{
+            //    (hService as ICommunicationObject).Faulted -= OnChannelTerminated;
+            //    (hService as ICommunicationObject).Closed -= OnChannelTerminated;
+            //}
         }
 
         #region Contract Operations
 
         public IPEndPoint[] GetNodes(int iMaxNodes, IPEndPoint[] hExclude) => m_hChannels.Keys.ToArray();
 
+        //Todo: iListenPort may be different than real (attack attemp?)
         public IPEndPoint[] Notify(int iListenPort)
         {
-            TIServiceCallback hCb       = OperationContext.Current.GetCallbackChannel<TIServiceCallback>();
-            IPEndPoint hRemoteEndPoint  = OperationContext.Current.GetRemoteEndPoint();
-            hRemoteEndPoint.Port        = iListenPort;
+            TIServiceCallback hCb                       = OperationContextEx.Current.GetCallbackChannel<TIServiceCallback>();
+            IPEndPoint hRemoteEndPoint                  = OperationContextEx.Current.RemoteEndPoint;
+            hRemoteEndPoint.Port                        = iListenPort;
+            OperationContextEx.Current.ListenerEndPoint = hRemoteEndPoint;
+
+            (hCb as ICommunicationObject).Closed       += OnChannelTerminated;
+            (hCb as ICommunicationObject).Faulted      += OnChannelTerminated;
 
             //When a client arrives we have a callback reference for sure
             m_hChannels.TryAdd(hRemoteEndPoint, hCb);
@@ -120,18 +138,15 @@ namespace Nebula.Core
             return m_hChannels.Keys.ToList().Where(ip => ip.Port != iListenPort).ToArray();
         }
 
+
+
         [ConsoleUIMethod]
-        public int GetNodesCount()                                         => m_hChannels.Count;
+        public int GetNodesCount()              => m_hChannels.Count;
 
         #endregion
 
 
         [ConsoleUIMethod]
-        public IPEndPoint[] EnumerateNodes()                               => m_hChannels.Keys.ToArray();
-        
-
-
-
-
+        public IPEndPoint[] EnumerateNodes()    => m_hChannels.Keys.ToArray();        
     }
 }
