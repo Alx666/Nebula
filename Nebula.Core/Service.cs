@@ -11,8 +11,8 @@ namespace Nebula.Core
 {
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     public abstract class Service<TIService, TIServiceCallback> : IBaseService
-        where TIService         : IBaseService
-        where TIServiceCallback : IBaseService
+        where TIService         : class, IBaseService
+        where TIServiceCallback : class, IBaseService
     {
         public IPEndPoint LocalEndPoint { get; private set; }
 
@@ -20,7 +20,7 @@ namespace Nebula.Core
         private string                                              m_sUriAppend;
         private InstanceContext                                     m_hContext;
 
-        protected ConcurrentDictionary<IPEndPoint, IBaseService>    m_hChannels;
+        private ConcurrentDictionary<IPEndPoint, IBaseService>      m_hChannels;
         private BlockingCollection<IPEndPoint>                      m_hTryConnect;
         private Task                                                m_hConnectionTask;
 
@@ -106,6 +106,9 @@ namespace Nebula.Core
             }
         }
 
+        //Guru Trick
+        protected List<dynamic> Nodes => m_hChannels.Values.Select(c => c as dynamic).ToList();
+
         private void OnChannelTerminated(object sender, EventArgs e)
         {
             //IBaseService hService = sender as IBaseService;
@@ -132,8 +135,9 @@ namespace Nebula.Core
             (hCb as ICommunicationObject).Closed       += OnChannelTerminated;
             (hCb as ICommunicationObject).Faulted      += OnChannelTerminated;
 
+            
             //When a client arrives we have a callback reference for sure
-            m_hChannels.TryAdd(hRemoteEndPoint, hCb);
+            m_hChannels.TryAdd(hRemoteEndPoint, hCb as IBaseService); //i know.. for now just hack
 
             return m_hChannels.Keys.ToList().Where(ip => ip.Port != iListenPort).ToArray();
         }

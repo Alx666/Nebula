@@ -30,6 +30,8 @@ namespace Nebula.Core
 
         public T GetCallbackChannel<T>() => OperationContext.Current.GetCallbackChannel<T>();
 
+
+
         public IPEndPoint ListenerEndPoint { get; set; }
 
         public IPEndPoint RemoteEndPoint

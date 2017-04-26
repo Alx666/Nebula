@@ -5,8 +5,10 @@ using System.Net;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using Nebula.Core;
 
-namespace Nebula.Core
+
+namespace Nebula.Elysium
 {
     [ServiceContract(CallbackContract = typeof(INodeCallback))]
     public interface IMasterServer : IBaseService

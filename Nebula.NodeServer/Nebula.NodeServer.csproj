@@ -54,6 +54,10 @@
       <Project>{2b92da38-07a6-46b0-941c-05e316040c1a}</Project>
       <Name>Nebula.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Nebula.Elysium\Nebula.Elysium.csproj">
+      <Project>{8B6F1A10-29DB-4A0E-BDFF-B7FBD32B88DB}</Project>
+      <Name>Nebula.Elysium</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

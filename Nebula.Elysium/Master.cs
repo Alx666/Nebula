@@ -3,8 +3,9 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Net;
 using System.ServiceModel;
+using Nebula.Core;
 
-namespace Nebula.Core
+namespace Nebula.Elysium
 {
     public class Master : Service<IMasterServer, IMasterServerCallback>
     {

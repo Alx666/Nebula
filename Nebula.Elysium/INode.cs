@@ -5,13 +5,17 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using Nebula.Core;
 
-namespace Nebula.Core
+namespace Nebula.Elysium
 {
     [ServiceContract(CallbackContract = typeof(INodeCallback))]
     public interface INode : IBaseService
     {
         [OperationContract]
-        string SendQuery(string sString);
+        List<string> Query(string sString);
+
+        [OperationContract(IsOneWay = true)]
+        void Store(string sString);
     }
 }

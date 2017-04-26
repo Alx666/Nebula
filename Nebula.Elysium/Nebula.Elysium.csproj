@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F556B9DA-EEAA-4ACF-9D15-E4E8E3F5C35C}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>Nebula.MasterServer</RootNamespace>
-    <AssemblyName>Nebula.MasterServer</AssemblyName>
+    <ProjectGuid>{8B6F1A10-29DB-4A0E-BDFF-B7FBD32B88DB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Nebula.Elysium</RootNamespace>
+    <AssemblyName>Nebula.Elysium</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -44,20 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="IMasterServer.cs" />
+    <Compile Include="IMasterServerCallback.cs" />
+    <Compile Include="INode.cs" />
+    <Compile Include="INodeCallback.cs" />
+    <Compile Include="Master.cs" />
+    <Compile Include="Node.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nebula.Core\Nebula.Core.csproj">
       <Project>{2b92da38-07a6-46b0-941c-05e316040c1a}</Project>
       <Name>Nebula.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Nebula.Elysium\Nebula.Elysium.csproj">
-      <Project>{8B6F1A10-29DB-4A0E-BDFF-B7FBD32B88DB}</Project>
-      <Name>Nebula.Elysium</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
