@@ -23,22 +23,15 @@ namespace Nebula.Elysium
 
 
         [ConsoleUIMethod]
-        public List<string> Query(string sKeywords)
-        {
-            string[] hKeywords = sKeywords.Split(new char[] { ' ' });
-
-            return (from s in m_hTestData from k in hKeywords where s.Contains(k) select s).ToList();
-        }
+        public List<string> Query(string sKeywords) => (from s in m_hTestData from k in sKeywords.Split(new char[] { ' ' }) where s.Contains(k) select s).ToList();
 
 
         [ConsoleUIMethod]
-        public void Store(string sString)
-        {
-            m_hTestData.Add(sString);
-        }
+        public void Store(string sString)           => m_hTestData.Add(sString);
+
 
         [ConsoleUIMethod]
-        public IEnumerable<string> NetworkQuery(string sKeywords)
+        public IEnumerable<string> NetQuery(string sKeywords)
         {
             List<string> hResult = new List<string>();
 
