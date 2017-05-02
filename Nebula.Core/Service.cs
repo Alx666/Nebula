@@ -16,13 +16,13 @@ namespace Nebula.Core
     {
         public IPEndPoint LocalEndPoint { get; private set; }
 
-        private ServiceHost                                         m_hHost;
-        private string                                              m_sUriAppend;
-        private InstanceContext                                     m_hContext;
+        protected   ServiceHost                                         m_hHost;
+        private     string                                              m_sUriAppend;
+        private     InstanceContext                                     m_hContext;
 
-        private ConcurrentDictionary<IPEndPoint, IBaseService>      m_hChannels;
-        private BlockingCollection<IPEndPoint>                      m_hTryConnect;
-        private Task                                                m_hConnectionTask;
+        private     ConcurrentDictionary<IPEndPoint, IBaseService>      m_hChannels;
+        private     BlockingCollection<IPEndPoint>                      m_hTryConnect;
+        private     Task                                                m_hConnectionTask;
 
         protected Service(string sUriAppenName)
         {

@@ -45,6 +45,15 @@ namespace Nebula.Elysium
             
             return hResult;
         }
+
+        [ConsoleUIMethod]
+        public void Start(int iNetPort, int iWebPort)
+        {
+            WSHttpBinding hHttpBinding = new WSHttpBinding(SecurityMode.None, true);
+            m_hHost.AddServiceEndpoint(typeof(INode), hHttpBinding, $"http://localhost:{iWebPort}/Elysium/");
+            
+            base.Start(iNetPort);
+        }
     }
 
 }

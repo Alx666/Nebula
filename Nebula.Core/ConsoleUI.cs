@@ -42,11 +42,11 @@ namespace Nebula.Core
 
         public ConsoleUI(object hTarget, string sWindowName)
         {
-            m_hSeparators = new char[] { ' ', '(' };
-            m_hExp = new Regex("((?<=\")(.*?)(?=\"))|(\\w[^\\s]*)");
-            m_hInstance = hTarget;
-            m_hCurrentCommand = new StringBuilder(1024);
-            m_hHistoryList = new List<string>();
+            m_hSeparators       = new char[] { ' ', '(' };
+            m_hExp              = new Regex("((?<=\")(.*?)(?=\"))|(\\w[^\\s]*)");
+            m_hInstance         = hTarget;
+            m_hCurrentCommand   = new StringBuilder(1024);
+            m_hHistoryList      = new List<string>();
 
             Console.Title = sWindowName;
             Console.ForegroundColor = ConsoleColor.Green;
@@ -308,9 +308,8 @@ namespace Nebula.Core
             if (sCommand.Length == 0)
                 return;
 
-            MethodCall hMethod = null;
-            object[] hParams;
-            object hResult;
+            MethodCall  hMethod = null;
+            object      hResult;
 
             IntPtr hAffinity = m_hCurrentProcess.ProcessorAffinity;
             ProcessPriorityClass eCurrentClass = m_hCurrentProcess.PriorityClass;
@@ -318,14 +317,17 @@ namespace Nebula.Core
 
             try
             {
-                this.Parse(sCommand, out hMethod, out hParams);
+                hMethod = sCommand.FindCaller(m_hMethodsList).FirstOrDefault();
+
+                if (hMethod == null)
+                    throw new MissingMethodException(sCommand);
 
                 this.FillLine(sCommand, ConsoleColor.Yellow);
 
                 m_hStopwatch.Reset();
                 m_hStopwatch.Start();
 
-                hResult = hMethod.Invoke(hParams);
+                hResult = hMethod.Invoke();
 
                 m_hStopwatch.Stop();
                 long lResult = m_hStopwatch.ElapsedMilliseconds;
@@ -411,70 +413,6 @@ namespace Nebula.Core
             Console.ForegroundColor = ePrev;
         }
 
-        private void Parse(string sCommand, out MethodCall hCommand, out object[] hParams)
-        {
-            MatchCollection hColl = m_hExp.Matches(sCommand);
-
-            List<string> hTokens = new List<string>();
-            for (int i = 0; i < hColl.Count; i++)
-            {
-                string sToken = hColl[i].Value.Trim().ToLower();
-                if (sToken != "")
-                    hTokens.Add(sToken);
-            }
-
-            if (hTokens.Count == 0)
-                throw new MissingMethodException();
-
-            hCommand = (from hM in m_hMethodsList where hM.CallName == hTokens[0] select hM).SingleOrDefault();
-            if (hCommand == null)
-                throw new MissingMethodException(hTokens[0]);
-
-            hParams = this.GetParameters(hCommand.Method, hTokens);
-        }
-
-        private object[] GetParameters(MethodInfo hMethod, List<string> hCmd)
-        {
-            ParameterInfo[] hParamInfo = hMethod.GetParameters();
-            object[] hRes = new object[hParamInfo.Length];
-
-            if (hParamInfo.Length != hCmd.Count - 1)
-            {
-                throw new ArgumentException(hMethod.ToString());
-            }
-
-
-            for (int i = 0; i < hParamInfo.Length; i++)
-            {
-                if (hParamInfo[i].ParameterType == typeof(string))
-                {
-                    hRes[i] = hCmd[i + 1];
-                }
-                else
-                {
-                    try
-                    {
-                        if (hParamInfo[i].ParameterType.IsEnum)
-                            hRes[i] = Enum.Parse(hParamInfo[i].ParameterType, hCmd[i + 1]);
-                        else
-                            hRes[i] = hParamInfo[i].ParameterType.InvokeMember("Parse", BindingFlags.InvokeMethod | BindingFlags.Static | BindingFlags.Public, null, null, new object[] { hCmd[i + 1], CultureInfo.InvariantCulture });
-                    }
-                    catch (Exception)
-                    {
-                        try
-                        {
-                            hRes[i] = hParamInfo[i].ParameterType.InvokeMember("Parse", BindingFlags.InvokeMethod | BindingFlags.Static | BindingFlags.Public, null, null, new object[] { hCmd[i + 1] });
-                        }
-                        catch (Exception)
-                        {
-                            throw new InvalidOperationException(string.Format("Can't parse argument number {0}: {1}", hParamInfo[i].Position, hParamInfo[i].Name));
-                        }
-                    }
-                }
-            }
-
-            return hRes;
-        }
 
         #endregion
 
@@ -482,58 +420,7 @@ namespace Nebula.Core
 
         #region Nested Types
 
-        public class MethodCall
-        {
-            public MethodInfo Method { get; private set; }
-            public object Instance { get; private set; }
 
-            public string CallName { get; private set; }
-
-            public string Signature { get; private set; }
-
-            public MethodCall(MethodInfo hMethod, object hInstance)
-            {
-                Method = hMethod;
-                Instance = hInstance;
-                Signature = this.BuildMethodSignature(hMethod);
-                CallName = Method.Name.ToLower();
-            }
-
-            public object Invoke(object[] hParams)
-            {
-                return this.Method.Invoke(Instance, hParams);
-            }
-
-            public override string ToString()
-            {
-                return Signature;
-            }
-
-            private string BuildMethodSignature(MethodInfo hMethod)
-            {
-                StringBuilder hBuilder = new StringBuilder();
-                ParameterInfo[] hParamInfo = hMethod.GetParameters();
-
-                hBuilder.Append(hMethod.ReturnType.GetFriendlyName());
-                hBuilder.Append(" ");
-                hBuilder.Append(hMethod.Name);
-                hBuilder.Append("(");
-
-                for (int i = 0; i < hParamInfo.Length; i++)
-                {
-                    hBuilder.Append(hParamInfo[i].ParameterType.GetFriendlyName());
-                    hBuilder.Append(" ");
-                    hBuilder.Append(hParamInfo[i].Name);
-
-                    if (i < hParamInfo.Length - 1)
-                        hBuilder.Append(", ");
-                }
-
-                hBuilder.Append(")");
-
-                return hBuilder.ToString();
-            }
-        }
 
         #endregion
 
@@ -662,8 +549,227 @@ namespace Nebula.Core
 
     }
 
+    public class MethodCall
+    {
+        public MethodInfo   Method      { get; private set; }
+        public object       Instance    { get; private set; }
+        public string       CallName    { get; private set; }
+        public string       Signature   { get; private set; }
+
+        public int          ParameterCount => m_hParameterConverter.Count;
+
+        private List<IParser>       m_hParameterConverter;
+        private object[]            m_hLastParameters;
+        
+        public MethodCall(MethodInfo hMethod, object hInstance)
+        {
+            Method                      = hMethod;
+            Instance                    = hInstance;
+            CallName                    = hMethod.Name.ToLower();            
+            Signature                   = hMethod.GetSignature();
+            m_hParameterConverter       = hMethod.GetParameters().Select(p => p.ParameterType.GetParser()).ToList();
+        }
+
+        public void Load(List<string> hParams)
+        {
+            m_hLastParameters = hParams.Skip(1).Select((s, i) => m_hParameterConverter[i].Parse(s)).ToArray();
+        }
+
+        public override string ToString()
+        {
+            return Signature;
+        }
+
+        public object Invoke()
+        {
+            return Method.Invoke(Instance, m_hLastParameters);
+        }
+
+    
+    }
+
+    #region Parsers
+    public interface IParser
+    {
+        object Parse(string sInput);
+    }
+
+    class ParserInt32 : IParser
+    {
+        public object Parse(string sInput)
+        {
+            return Int32.Parse(sInput);
+        }
+    }
+
+    class ParserInt64 : IParser
+    {
+        public object Parse(string sInput)
+        {
+            return Int64.Parse(sInput);
+        }
+    }
+
+    class ParserUInt32 : IParser
+    {
+        public object Parse(string sInput)
+        {
+            return UInt32.Parse(sInput);
+        }
+    }
+
+    class ParserUInt64 : IParser
+    {
+        public object Parse(string sInput)
+        {
+            return UInt64.Parse(sInput);
+        }
+    }
+
+    class ParserSingle : IParser
+    {
+        public object Parse(string sInput)
+        {
+            return Single.Parse(sInput);
+        }
+    }
+
+    class ParserDouble : IParser
+    {
+        public object Parse(string sInput)
+        {
+            return Double.Parse(sInput);
+        }
+    }
+
+    class ParserDecimal : IParser
+    {
+        public object Parse(string sInput)
+        {
+            return Decimal.Parse(sInput);
+        }
+    }
+
+    class ParserInt16 : IParser
+    {
+        public object Parse(string sInput)
+        {
+            return Int16.Parse(sInput);
+        }
+    }
+
+    class ParserUInt16 : IParser
+    {
+        public object Parse(string sInput)
+        {
+            return UInt16.Parse(sInput);
+        }
+    }
+
+    class ParserBoolean : IParser
+    {
+        public object Parse(string sInput)
+        {
+            return Boolean.Parse(sInput);
+        }
+    }
+
+    class ParserChar : IParser
+    {
+        public object Parse(string sInput)
+        {
+            if (sInput.Length > 1)
+                throw new FormatException();
+            else if (string.IsNullOrEmpty(sInput))
+                throw new ArgumentNullException();
+            else
+                return sInput[0];
+        }
+    }
+    class ParserByte : IParser
+    {
+        public object Parse(string sInput)
+        {
+            return Byte.Parse(sInput);
+        }
+    }
+
+    class ParserSByte : IParser
+    {
+        public object Parse(string sInput)
+        {
+            return SByte.Parse(sInput);
+        }
+    }
+
+    class ParserDateTime : IParser
+    {
+        public object Parse(string sInput)
+        {
+            return DateTime.Parse(sInput);
+        }
+    }
+    class ParserString : IParser
+    {
+        public object Parse(string sInput)
+        {
+            return sInput;
+        }
+    }
+
+    #endregion
+
     public static class ConsoleUIExtensions
     {
+        private static Regex m_hExp                         = new Regex("((?<=\")(.*?)(?=\"))|(\\w[^\\s]*)");
+
+        private static ParserInt32      m_hParserInt32      = new ParserInt32();
+        private static ParserInt64      m_hParserInt64      = new ParserInt64();
+        private static ParserUInt32     m_hParserUInt32     = new ParserUInt32();
+        private static ParserUInt64     m_hParserUInt64     = new ParserUInt64();
+        private static ParserSingle     m_hParserSingle     = new ParserSingle();
+        private static ParserDouble     m_hParserDouble     = new ParserDouble();
+        private static ParserDecimal    m_hParserDecimal    = new ParserDecimal();
+        private static ParserInt16      m_hParserInt16      = new ParserInt16();
+        private static ParserUInt16     m_hParserUInt16     = new ParserUInt16();
+        private static ParserBoolean    m_hParserBool       = new ParserBoolean();
+        private static ParserChar       m_hParserChar       = new ParserChar();
+        private static ParserByte       m_hParserByte       = new ParserByte();
+        private static ParserSByte      m_hParserSByte      = new ParserSByte();
+        private static ParserDateTime   m_hParserDateTime   = new ParserDateTime();
+        private static ParserString     m_hParserString     = new ParserString();
+
+        public static IParser GetParser(this Type hType)
+        {
+            switch (Type.GetTypeCode(hType))
+            {
+                case TypeCode.Boolean:  return m_hParserBool;
+                case TypeCode.Char:     return m_hParserChar;
+                case TypeCode.SByte:    return m_hParserSByte;
+                case TypeCode.Byte:     return m_hParserByte;
+                case TypeCode.Int16:    return m_hParserInt16;
+                case TypeCode.UInt16:   return m_hParserUInt16;
+                case TypeCode.Int32:    return m_hParserInt32;
+                case TypeCode.UInt32:   return m_hParserUInt32;
+                case TypeCode.Int64:    return m_hParserInt64;
+                case TypeCode.UInt64:   return m_hParserUInt64;
+                case TypeCode.Single:   return m_hParserSingle;
+                case TypeCode.Double:   return m_hParserDouble;
+                case TypeCode.Decimal:  return m_hParserDecimal;
+                case TypeCode.DateTime: return m_hParserDateTime;
+                case TypeCode.String:   return m_hParserString;
+                default: throw new Exception();
+            }
+        }
+
+        public static string GetSignature(this MethodInfo hMethod)
+        {
+            ParameterInfo[] hParams = hMethod.GetParameters();
+            string sReturnType = hMethod.ReturnParameter.ParameterType.GetFriendlyName();
+            string sParameters = hParams.Length == 0 ? string.Empty : (from hP in hParams select $"{hP.ParameterType.GetFriendlyName()} {hP.Name}").Aggregate((x, y) => x + ", " + y);
+            return $"{sReturnType} {hMethod.Name}({sParameters})";
+        }
+
         public static string GetFriendlyName(this Type hType)
         {
             if (hType.IsGenericType)
@@ -681,6 +787,89 @@ namespace Nebula.Core
             for (Type hCurrent = hType; hCurrent != null; hCurrent = hCurrent.BaseType)
                 yield return hCurrent;
         }
+
+        public static List<MethodCall> FindCaller(this string sCommand, List<MethodCall> hValidMethods)
+        {
+            MatchCollection hColl   = m_hExp.Matches(sCommand);
+            
+            List<string> hTokens = new List<string>();
+
+            for (int i = 0; i < hColl.Count; i++)
+            {
+                string sToken = hColl[i].Value.Trim().ToLower();
+                if (sToken != "")
+                    hTokens.Add(sToken);
+            }
+
+            if (hTokens.Count == 0)
+                throw new MissingMethodException();
+
+            List<MethodCall> hMethods = new List<MethodCall>();
+
+            for (int i = 0; i < hValidMethods.Count; i++)
+            {
+                MethodCall hCurrent = hValidMethods[i];
+                if (hCurrent.CallName == hTokens[0] && hCurrent.ParameterCount == hTokens.Count - 1)
+                {
+                    try
+                    {
+                        hCurrent.Load(hTokens);
+                        hMethods.Add(hCurrent);
+                    }
+                    catch (Exception)
+                    {
+                        //Skip current method
+                    }
+                }
+            }
+
+            return hMethods;
+        }
+
+        
+
+        //private static object[] GetParameters(this MethodInfo hMethod, List<string> hCmd)
+        //{
+        //    ParameterInfo[] hParamInfo = hMethod.GetParameters();
+        //    object[] hRes = new object[hParamInfo.Length];
+
+        //    if (hParamInfo.Length != hCmd.Count - 1)
+        //    {
+        //        throw new ArgumentException(hMethod.ToString());
+        //    }
+
+
+        //    for (int i = 0; i < hParamInfo.Length; i++)
+        //    {
+        //        if (hParamInfo[i].ParameterType == typeof(string))
+        //        {
+        //            hRes[i] = hCmd[i + 1];
+        //        }
+        //        else
+        //        {
+        //            try
+        //            {
+        //                if (hParamInfo[i].ParameterType.IsEnum)
+        //                    hRes[i] = Enum.Parse(hParamInfo[i].ParameterType, hCmd[i + 1]);
+        //                else
+        //                    hRes[i] = hParamInfo[i].ParameterType.InvokeMember("Parse", BindingFlags.InvokeMethod | BindingFlags.Static | BindingFlags.Public, null, null, new object[] { hCmd[i + 1], CultureInfo.InvariantCulture });
+        //            }
+        //            catch (Exception)
+        //            {
+        //                try
+        //                {
+        //                    hRes[i] = hParamInfo[i].ParameterType.InvokeMember("Parse", BindingFlags.InvokeMethod | BindingFlags.Static | BindingFlags.Public, null, null, new object[] { hCmd[i + 1] });
+        //                }
+        //                catch (Exception)
+        //                {
+        //                    throw new InvalidOperationException(string.Format("Can't parse argument number {0}: {1}", hParamInfo[i].Position, hParamInfo[i].Name));
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return hRes;
+        //}
     }
 
 }
