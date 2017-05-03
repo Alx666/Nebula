@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Nebula.Core
 {
-    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single, AddressFilterMode = AddressFilterMode.Any)]
     public abstract class Service<TIService, TIServiceCallback> : IBaseService
         where TIService         : class, IBaseService
         where TIServiceCallback : class, IBaseService
@@ -17,6 +17,7 @@ namespace Nebula.Core
         public IPEndPoint LocalEndPoint { get; private set; }
 
         protected   ServiceHost                                         m_hHost;
+
         private     string                                              m_sUriAppend;
         private     InstanceContext                                     m_hContext;
 
@@ -35,17 +36,23 @@ namespace Nebula.Core
 
         [ConsoleUIMethod]
         public virtual void Start(int iPort)
-        {
+        {            
             m_hHost                 = new ServiceHost(this, new Uri($"net.tcp://localhost:{iPort}/{m_sUriAppend}"));
             LocalEndPoint           = new IPEndPoint(IPAddress.Loopback, iPort);
-            NetTcpBinding hBinding  = new NetTcpBinding();
-            hBinding.Security.Mode  = SecurityMode.None;
 
-            m_hHost.AddServiceEndpoint(typeof(TIService), hBinding, string.Empty);
+            this.OnAddService();
+
             m_hHost.Open();            
 
             m_hConnectionTask       = new Task(ConnectionTask, TaskCreationOptions.LongRunning);
             m_hConnectionTask.Start();
+        }
+
+        protected virtual void OnAddService()
+        {
+            NetTcpBinding hBinding = new NetTcpBinding();
+            hBinding.Security.Mode = SecurityMode.None;
+            m_hHost.AddServiceEndpoint(typeof(TIService), hBinding, string.Empty);
         }
 
         [ConsoleUIMethod]

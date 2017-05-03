@@ -796,7 +796,11 @@ namespace Nebula.Core
 
             for (int i = 0; i < hColl.Count; i++)
             {
-                string sToken = hColl[i].Value.Trim().ToLower();
+                string sToken = hColl[i].Value.Trim();
+
+                if (i == 0)
+                    sToken = sToken.ToLower();
+
                 if (sToken != "")
                     hTokens.Add(sToken);
             }
