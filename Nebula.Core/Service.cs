@@ -51,6 +51,8 @@ namespace Nebula.Core
         protected virtual void OnAddService()
         {
             NetTcpBinding hBinding = new NetTcpBinding();
+            hBinding.ReceiveTimeout = TimeSpan.MaxValue;
+            hBinding.SendTimeout    = TimeSpan.MaxValue;            
             hBinding.Security.Mode = SecurityMode.None;
             m_hHost.AddServiceEndpoint(typeof(TIService), hBinding, string.Empty);
         }

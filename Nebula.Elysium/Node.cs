@@ -58,6 +58,7 @@ namespace Nebula.Elysium
                 hQueryResult.ForEach(s => hResult.Add(s));
             }
 
+            hResult.AddRange(this.Query(value));
 
             return hResult;
         }
@@ -83,6 +84,8 @@ namespace Nebula.Elysium
             //BasicHttpBinding hBasicHttpBinding  = new BasicHttpBinding(BasicHttpSecurityMode.None); //SOAP 1.1  => poor security, compatible
             //WSHttpBinding    hWsHttpBinding     = new WSHttpBinding(SecurityMode.None);             //SOAP      => full features
             WebHttpBinding hWebHttpBinding = new WebHttpBinding(WebHttpSecurityMode.None);       //Rest      => XML
+            hWebHttpBinding.ReceiveTimeout = TimeSpan.MaxValue;
+            hWebHttpBinding.SendTimeout = TimeSpan.MaxValue;
             ServiceEndpoint hEndpoint = m_hHost.AddServiceEndpoint(typeof(IElysiumNodeWebService), hWebHttpBinding, $"http://localhost:{LocalWebEndPoint.Port}/Elysium/");
             WebHttpBehavior hBehaviour = new WebHttpBehavior();
 
