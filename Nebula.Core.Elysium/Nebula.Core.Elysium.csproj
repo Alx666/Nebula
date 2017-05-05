@@ -7,8 +7,8 @@
     <ProjectGuid>{8B6F1A10-29DB-4A0E-BDFF-B7FBD32B88DB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Nebula.Elysium</RootNamespace>
-    <AssemblyName>Nebula.Elysium</AssemblyName>
+    <RootNamespace>Nebula.Core.Elysium</RootNamespace>
+    <AssemblyName>Nebula.Core.Elysium</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

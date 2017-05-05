@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Nebula.Elysium
+namespace Nebula.Core.Elysium
 {
     [ServiceContract(Name = "Elysium")]
     public interface IElysiumNodeWebService

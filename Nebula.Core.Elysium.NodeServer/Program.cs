@@ -1,7 +1,7 @@
 ﻿using Nebula.Core;
-using Nebula.Elysium;
+using Nebula.Core.Elysium;
 
-namespace Nebula.NodeServer
+namespace Nebula.Core.Elysium.NodeServer
 {
     class Program
     {

@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C5796136-7C02-416D-A2C0-057C53D8AF78}</ProjectGuid>
+    <ProjectGuid>{F556B9DA-EEAA-4ACF-9D15-E4E8E3F5C35C}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Nebula.NodeServer</RootNamespace>
-    <AssemblyName>Nebula.NodeServer</AssemblyName>
+    <RootNamespace>Nebula.MasterServer</RootNamespace>
+    <AssemblyName>Nebula.MasterServer</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,9 +55,9 @@
       <Project>{2b92da38-07a6-46b0-941c-05e316040c1a}</Project>
       <Name>Nebula.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Nebula.Elysium\Nebula.Elysium.csproj">
+    <ProjectReference Include="..\Nebula.Core.Elysium\Nebula.Core.Elysium.csproj">
       <Project>{8B6F1A10-29DB-4A0E-BDFF-B7FBD32B88DB}</Project>
-      <Name>Nebula.Elysium</Name>
+      <Name>Nebula.Core.Elysium</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

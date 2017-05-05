@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Nebula.Core;
 
 
-namespace Nebula.Elysium
+namespace Nebula.Core.Elysium
 {
     [ServiceContract(CallbackContract = typeof(INodeCallback))]
     public interface IMasterServer : IBaseService

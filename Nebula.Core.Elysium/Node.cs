@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Nebula.Elysium
+namespace Nebula.Core.Elysium
 {
     public class Node : Service<INode, INodeCallback>, INode, INodeCallback, IElysiumNodeWebService
     {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Net;
 using Nebula.Core;
 
-namespace Nebula.Elysium
+namespace Nebula.Core.Elysium
 {
     [ServiceContract(CallbackContract = typeof(INodeCallback))]
     public interface INode : IBaseService

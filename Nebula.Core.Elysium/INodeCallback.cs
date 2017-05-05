@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Nebula.Core;
 
-namespace Nebula.Elysium
+namespace Nebula.Core.Elysium
 {    
     public interface INodeCallback : IBaseService
     {

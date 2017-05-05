@@ -5,7 +5,7 @@ using System.Net;
 using System.ServiceModel;
 using Nebula.Core;
 
-namespace Nebula.Elysium
+namespace Nebula.Core.Elysium
 {
     public class Master : Service<IMasterServer, IMasterServerCallback>
     {
