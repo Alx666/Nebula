@@ -13,14 +13,6 @@ namespace Nebula.Core.Elysium
     public interface IElysiumNodeWebService
     {
         [OperationContract]
-        [WebGet(UriTemplate = "/hello", ResponseFormat = WebMessageFormat.Xml)]
-        string Hello();
-
-        [OperationContract]
-        [WebGet(UriTemplate = "/helloparameter?value={value}", ResponseFormat = WebMessageFormat.Xml)]
-        string HelloParameter(int value);
-
-        [OperationContract]
         [WebGet(UriTemplate = "/netquery?value={value}", ResponseFormat = WebMessageFormat.Xml)]
         List<string> NetQuery(string value);
     }

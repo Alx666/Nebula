@@ -1,7 +1,4 @@
-﻿using Nebula.Core;
-using Nebula.Core.Elysium;
-
-namespace Nebula.MasterServer
+﻿namespace Nebula.Core.Elysium.MasterServer
 {
     class Program
     {

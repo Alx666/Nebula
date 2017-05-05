@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Nebula.Core.Elysium
 {
-    public class Node : Service<INode, INodeCallback>, INode, INodeCallback, IElysiumNodeWebService
+    public class Node : Service<INode, INodeCallback>, INode, INodeCallback, IElysiumNodeWebService, IMasterServerCallback
     {
         private List<string> m_hTestData;
 
@@ -22,22 +22,18 @@ namespace Nebula.Core.Elysium
         public Node() : base("NebulaNode")
         {
             m_hTestData = new List<string>();
-
         }
 
-
-        [ConsoleUIMethod]
-        public List<string> Query(string sKeywords)
+        public Node(string[] hArgs) : this()
         {
-            var hKeywords = sKeywords.Split(new char[] { ' ' });
 
+            int iNetPort        = int.Parse(hArgs[0]);
+            int iWebPort        = int.Parse(hArgs[1]);
+            string  sMsAddr     = hArgs[2];
+            int     iMsPort     = int.Parse(hArgs[3]);
 
-            return (from s in m_hTestData from k in hKeywords where s.Contains(k) select s).ToList();
+            this.Start(iNetPort, iWebPort);
         }
-
-
-        [ConsoleUIMethod]
-        public void Store(string sString) => m_hTestData.Add(sString);
 
         [ConsoleUIMethod]
         public IEnumerable<string> DumpData()
@@ -45,6 +41,22 @@ namespace Nebula.Core.Elysium
             return m_hTestData;
         }
 
+        #region INode
+
+        [ConsoleUIMethod]
+        public List<string> Query(string sKeywords)
+        {
+            var hKeywords = sKeywords.Split(new char[] { ' ' });
+            return (from s in m_hTestData from k in hKeywords where s.Contains(k) select s).ToList();
+        }
+
+
+        [ConsoleUIMethod]
+        public void Store(string sString) => m_hTestData.Add(sString);
+
+        #endregion
+
+        #region IElysiumNodeWebService
 
         [ConsoleUIMethod]
         public List<string> NetQuery(string value)
@@ -63,6 +75,20 @@ namespace Nebula.Core.Elysium
             return hResult;
         }
 
+        #endregion
+
+        #region IMasterSeverCallback
+
+        [ConsoleUIMethod]
+        public NodeStatus GetNodeStatus()
+        {
+            return null;
+        }
+
+        #endregion
+
+        #region Control Methods
+
         [ConsoleUIMethod]
         public void Start(int iNetPort, int iWebPort)
         {
@@ -76,6 +102,16 @@ namespace Nebula.Core.Elysium
             base.Start(iNetPort);
         }
 
+        [ConsoleUIMethod]
+        public void Start(int iNetPort, int iWebPort, string sMsAddr, int iMsPort)
+        {
+            this.Start(iNetPort, iWebPort);
+        }
+
+        #endregion
+
+        #region System Overrides
+
         //https://msdn.microsoft.com/en-us/library/hh205277(v=vs.110).aspx
         //netsh http add urlacl url=http://+:1001/Elysium user="NT AUTHORITY\NETWORK SERVICE"
         protected override void OnAddService()
@@ -83,24 +119,17 @@ namespace Nebula.Core.Elysium
             base.OnAddService();
             //BasicHttpBinding hBasicHttpBinding  = new BasicHttpBinding(BasicHttpSecurityMode.None); //SOAP 1.1  => poor security, compatible
             //WSHttpBinding    hWsHttpBinding     = new WSHttpBinding(SecurityMode.None);             //SOAP      => full features
-            WebHttpBinding hWebHttpBinding = new WebHttpBinding(WebHttpSecurityMode.None);       //Rest      => XML
-            hWebHttpBinding.ReceiveTimeout = TimeSpan.MaxValue;
-            hWebHttpBinding.SendTimeout = TimeSpan.MaxValue;
-            ServiceEndpoint hEndpoint = m_hHost.AddServiceEndpoint(typeof(IElysiumNodeWebService), hWebHttpBinding, $"http://localhost:{LocalWebEndPoint.Port}/Elysium/");
-            WebHttpBehavior hBehaviour = new WebHttpBehavior();
+            WebHttpBinding hWebHttpBinding  = new WebHttpBinding(WebHttpSecurityMode.None);       //Rest      => XML
+            hWebHttpBinding.ReceiveTimeout  = TimeSpan.MaxValue;
+            hWebHttpBinding.SendTimeout     = TimeSpan.MaxValue;
+            ServiceEndpoint hEndpoint       = m_hHost.AddServiceEndpoint(typeof(IElysiumNodeWebService), hWebHttpBinding, $"http://localhost:{LocalWebEndPoint.Port}/Elysium/");
+            WebHttpBehavior hBehaviour      = new WebHttpBehavior();
 
             hEndpoint.EndpointBehaviors.Add(hBehaviour);
         }
 
-        public string Hello()
-        {
-            return "Hello";
-        }
+        #endregion
 
-        public string HelloParameter(int value)
-        {
-            return "Hello " + value;
-        }
     }
 
     static class RandomDataGenerator
