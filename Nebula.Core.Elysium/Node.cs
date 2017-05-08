@@ -10,6 +10,7 @@ using System.ServiceModel.Description;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Security.Principal;
 
 namespace Nebula.Core.Elysium
 {
@@ -17,22 +18,27 @@ namespace Nebula.Core.Elysium
     {
         private List<string> m_hTestData;
 
-        public IPEndPoint LocalWebEndPoint { get; private set; }
+        public IPEndPoint LocalWebEndPoint      { get; private set; }
+        public IPEndPoint MasaterServerEndPoint { get; private set; }
+
+        private DuplexChannelFactory<IMasterServer> m_hMSChannelFactory;
 
         public Node() : base("NebulaNode")
         {
             m_hTestData = new List<string>();
-        }
+            
+            bool bIsElevated;
 
-        public Node(string[] hArgs) : this()
-        {
+            using (WindowsIdentity hIdentity = WindowsIdentity.GetCurrent())
+            {
+                WindowsPrincipal hWnd   = new WindowsPrincipal(hIdentity);
+                bIsElevated             = hWnd.IsInRole(WindowsBuiltInRole.Administrator);
+            }
 
-            int iNetPort        = int.Parse(hArgs[0]);
-            int iWebPort        = int.Parse(hArgs[1]);
-            string  sMsAddr     = hArgs[2];
-            int     iMsPort     = int.Parse(hArgs[3]);
+            if (!bIsElevated)
+                throw new Exception("Application require Administrator priviledge");
 
-            this.Start(iNetPort, iWebPort);
+            m_hMSChannelFactory = new DuplexChannelFactory<IMasterServer>(m_hContext, m_hNetTcpBinding);
         }
 
         [ConsoleUIMethod]
@@ -105,7 +111,18 @@ namespace Nebula.Core.Elysium
         [ConsoleUIMethod]
         public void Start(int iNetPort, int iWebPort, string sMsAddr, int iMsPort)
         {
+            MasaterServerEndPoint = new IPEndPoint(IPAddress.Parse(sMsAddr), iMsPort);
+            
+            IMasterServer hNewNode = m_hMSChannelFactory.CreateChannel(new EndpointAddress($"net.tcp://{MasaterServerEndPoint.Address}:{MasaterServerEndPoint.Port}/ElysiumMasterServer"));
+
+            (hNewNode as ICommunicationObject).Faulted  += OnMasterServerChannelClosed;
+            (hNewNode as ICommunicationObject).Closed   += OnMasterServerChannelClosed;
+
+
             this.Start(iNetPort, iWebPort);
+
+            hNewNode.Register(iNetPort);
+            hNewNode.GetNodes(int.MaxValue).ToList().ForEach(x => this.Connect(x.Address.ToString(), x.Port));
         }
 
         #endregion
@@ -117,15 +134,39 @@ namespace Nebula.Core.Elysium
         protected override void OnAddService()
         {
             base.OnAddService();
+
             //BasicHttpBinding hBasicHttpBinding  = new BasicHttpBinding(BasicHttpSecurityMode.None); //SOAP 1.1  => poor security, compatible
             //WSHttpBinding    hWsHttpBinding     = new WSHttpBinding(SecurityMode.None);             //SOAP      => full features
-            WebHttpBinding hWebHttpBinding  = new WebHttpBinding(WebHttpSecurityMode.None);       //Rest      => XML
-            hWebHttpBinding.ReceiveTimeout  = TimeSpan.MaxValue;
-            hWebHttpBinding.SendTimeout     = TimeSpan.MaxValue;
-            ServiceEndpoint hEndpoint       = m_hHost.AddServiceEndpoint(typeof(IElysiumNodeWebService), hWebHttpBinding, $"http://localhost:{LocalWebEndPoint.Port}/Elysium/");
-            WebHttpBehavior hBehaviour      = new WebHttpBehavior();
 
-            hEndpoint.EndpointBehaviors.Add(hBehaviour);
+            if(LocalWebEndPoint != null)
+            { 
+                WebHttpBinding hWebHttpBinding                  = new WebHttpBinding(WebHttpSecurityMode.None);       //Rest      => XML
+                hWebHttpBinding.ReceiveTimeout                  = TimeSpan.MaxValue;
+                hWebHttpBinding.SendTimeout                     = TimeSpan.MaxValue;
+                ServiceEndpoint hEndpoint                       = m_hHost.AddServiceEndpoint(typeof(IElysiumNodeWebService), hWebHttpBinding, $"http://localhost:{LocalWebEndPoint.Port}/Elysium/");
+                WebHttpBehavior hBehaviour                      = new WebHttpBehavior();
+
+                hEndpoint.EndpointBehaviors.Add(hBehaviour);
+            }
+
+            if (MasaterServerEndPoint != null)
+            {
+                NetTcpBinding hBinding                          = new NetTcpBinding();
+                hBinding.ReceiveTimeout                         = TimeSpan.MaxValue;
+                hBinding.SendTimeout                            = TimeSpan.MaxValue;
+                hBinding.Security.Mode                          = SecurityMode.None;
+                DuplexChannelFactory<IMasterServer> hFactory    = new DuplexChannelFactory<IMasterServer>(this.GetType(), hBinding);
+
+                IMasterServer hNewNode                          = hFactory.CreateChannel(new InstanceContext(this), new EndpointAddress($"net.tcp://{MasaterServerEndPoint.Address}:{MasaterServerEndPoint.Port}/ElysiumMasterServer"));
+                (hNewNode as ICommunicationObject).Faulted     += OnMasterServerChannelClosed;
+                (hNewNode as ICommunicationObject).Closed      += OnMasterServerChannelClosed;
+            }
+
+        }
+
+        private void OnMasterServerChannelClosed(object sender, EventArgs args)
+        {
+            Console.WriteLine("Master Server Channel Faulted");
         }
 
         #endregion

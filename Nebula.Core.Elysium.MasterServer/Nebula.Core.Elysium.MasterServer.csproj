@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F556B9DA-EEAA-4ACF-9D15-E4E8E3F5C35C}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Nebula.MasterServer</RootNamespace>
-    <AssemblyName>Nebula.MasterServer</AssemblyName>
+    <RootNamespace>Nebula.Core.Elysium.MasterServer</RootNamespace>
+    <AssemblyName>Nebula.Core.Elysium.MasterServer</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

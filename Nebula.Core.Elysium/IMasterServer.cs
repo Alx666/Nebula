@@ -10,9 +10,13 @@ using Nebula.Core;
 
 namespace Nebula.Core.Elysium
 {
-    [ServiceContract(CallbackContract = typeof(INodeCallback))]
-    public interface IMasterServer : IBaseService
+    [ServiceContract(CallbackContract = typeof(IMasterServerCallback))]
+    public interface IMasterServer
     {
+        [OperationContract]
+        void Register(int iPort);
 
+        [OperationContract]
+        IPEndPoint[] GetNodes(int iMaxNodes);
     }
 }

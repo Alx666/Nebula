@@ -26,6 +26,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Core.Elysium.MasterS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Core.Elysium.NodeServer", "Nebula.Core.Elysium.NodeServer\Nebula.Core.Elysium.NodeServer.csproj", "{96E8EF96-0426-49E0-B0C4-70221B0C4D56}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{28B38A35-033D-4943-9989-734537C82C3C}"
+	ProjectSection(SolutionItems) = preProject
+		RunTest.bat = RunTest.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

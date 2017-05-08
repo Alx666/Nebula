@@ -513,28 +513,28 @@ namespace Nebula.Core
                 }
             }
 
-            for (int i = 0; i < hMethodsList.Count; i++)
-            {
-                MethodCall hToCall = hMethodsList[i];
+            //for (int i = 0; i < hMethodsList.Count; i++)
+            //{
+            //    MethodCall hToCall = hMethodsList[i];
 
-                for (int k = 0; k < hMethodsList.Count; k++)
-                {
-                    MethodCall hOverload = hMethodsList[k];
+            //    for (int k = 0; k < hMethodsList.Count; k++)
+            //    {
+            //        MethodCall hOverload = hMethodsList[k];
 
-                    if (hToCall.Method.DeclaringType == hOverload.Method.DeclaringType && hToCall.CallName == hOverload.CallName && hToCall != hOverload)
-                    {
-                        hToRemove.Add(hOverload);
-                        hMethodsList.RemoveAt(k);
-                        k--;
-                        i--;
+            //        if (hToCall.Method.DeclaringType == hOverload.Method.DeclaringType && hToCall.CallName == hOverload.CallName && hToCall != hOverload)
+            //        {
+            //            hToRemove.Add(hOverload);
+            //            hMethodsList.RemoveAt(k);
+            //            k--;
+            //            i--;
 
-                        StringBuilder hSb = new StringBuilder();
-                        hSb.AppendFormat("Warning: {0}{1}", hOverload.Signature, Environment.NewLine);
-                        hSb.AppendLine("\tMethods Overload Not Supported");
-                        ConsoleUI.WriteLine(hSb.ToString(), ConsoleColor.DarkYellow);
-                    }
-                }
-            }
+            //            StringBuilder hSb = new StringBuilder();
+            //            hSb.AppendFormat("Warning: {0}{1}", hOverload.Signature, Environment.NewLine);
+            //            hSb.AppendLine("\tMethods Overload Not Supported");
+            //            ConsoleUI.WriteLine(hSb.ToString(), ConsoleColor.DarkYellow);
+            //        }
+            //    }
+            //}
 
 
             hMethodsList = (hMethodsList.Except(hToRemove)).ToList();

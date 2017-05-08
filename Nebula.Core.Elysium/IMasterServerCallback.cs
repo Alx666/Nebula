@@ -2,7 +2,7 @@
 
 namespace Nebula.Core.Elysium
 {
-    public interface IMasterServerCallback : IBaseService
+    public interface IMasterServerCallback
     {
         [OperationContract]
         NodeStatus GetNodeStatus();
