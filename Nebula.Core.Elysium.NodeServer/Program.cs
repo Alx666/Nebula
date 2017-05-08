@@ -36,7 +36,7 @@ namespace Nebula.Core.Elysium.NodeServer
                 }
 
                 hNode.ChannelClosed += OnChannelClosed;
-                hNode.ChannelFauled += OnChannelFaulted;
+                hNode.ChannelFaulted += OnChannelFaulted;
 
                 ConsoleUI hConsole   = new ConsoleUI(hNode, sTitle);
                 hConsole.RunAndWait();

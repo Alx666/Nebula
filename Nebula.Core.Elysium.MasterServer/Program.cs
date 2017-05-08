@@ -25,8 +25,8 @@ namespace Nebula.Core.Elysium.MasterServer
                     throw new Exception("Parameters must be in form:\n <binary port> <web port> <master server address> <master server port>");
                 }
 
-                //hNode.ChannelClosed += OnChannelClosed;
-                //hNode.ChannelFauled += OnChannelFaulted;
+                hNode.ChannelClosed += OnChannelClosed;
+                hNode.ChannelFaulted += OnChannelClosed;
 
                 ConsoleUI hConsole = new ConsoleUI(hNode, sTitle);
                 hConsole.RunAndWait();
@@ -35,6 +35,11 @@ namespace Nebula.Core.Elysium.MasterServer
             {
                 Console.WriteLine(e.Message);
             }
+        }
+
+        private static void OnChannelClosed(Master.NodeReference obj)
+        {
+            Console.WriteLine("Peer Disconnected");
         }
     }
 }

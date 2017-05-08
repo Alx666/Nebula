@@ -27,7 +27,7 @@ namespace Nebula.Core
         private     Task                                                m_hConnectionTask;
 
         public event Action<IBaseService>                               ChannelClosed;
-        public event Action<IBaseService>                               ChannelFauled;
+        public event Action<IBaseService>                               ChannelFaulted;
 
         protected Service(string sUriAppenName)
         {
@@ -141,7 +141,7 @@ namespace Nebula.Core
         private void OnChannelFaulted(object sender, EventArgs e)
         {
             HandleDisconnection(sender as IBaseService);
-            ChannelFauled?.Invoke(sender as IBaseService);
+            ChannelFaulted?.Invoke(sender as IBaseService);
         }
 
         private void OnChannelClosed(object sender, EventArgs e)

@@ -5,6 +5,7 @@ using System.Net;
 using System.ServiceModel;
 using Nebula.Core;
 using System.ServiceModel.Channels;
+using System.Collections.Generic;
 
 namespace Nebula.Core.Elysium
 {
@@ -15,6 +16,9 @@ namespace Nebula.Core.Elysium
         private ServiceHost                                     m_hHost;        
 
         public IPEndPoint LocalEndPoint { get; private set; }
+
+        public event Action<NodeReference> ChannelClosed;
+        public event Action<NodeReference> ChannelFaulted;
 
         public Master()
         {
@@ -48,8 +52,43 @@ namespace Nebula.Core.Elysium
 
             NodeReference hNewNode = new NodeReference(hCb, new IPEndPoint(IPAddress.Parse(hEndPointProp.Address), iPort));
 
+            (hNewNode as ICommunicationObject).Faulted += OnChannelFaulted;
+            (hNewNode as ICommunicationObject).Closed  += OnChannelClosed;
+
             m_hKnownPeers.TryAdd(hNewNode.RemoteEndPoint, hNewNode);
 
+        }
+
+        private NodeReference HandleDisconnection(IMasterServerCallback hCb)
+        {
+            KeyValuePair<IPEndPoint, NodeReference> hRef = (from c in m_hKnownPeers where c.Value.Node == hCb select c).FirstOrDefault();
+            NodeReference hRes;
+
+            if (hRef.Key != null && m_hKnownPeers.TryRemove(hRef.Key, out hRes))
+            {
+                (hRef.Value as ICommunicationObject).Faulted -= OnChannelFaulted;
+                (hRef.Value as ICommunicationObject).Closed -= OnChannelClosed;
+
+                return hRes;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private void OnChannelFaulted(object sender, EventArgs e)
+        {
+            IMasterServerCallback hCb = sender as IMasterServerCallback;
+            NodeReference hRef = HandleDisconnection(hCb);
+            ChannelFaulted?.Invoke(hRef);
+        }
+
+        private void OnChannelClosed(object sender, EventArgs e)
+        {
+            IMasterServerCallback hCb = sender as IMasterServerCallback;
+            NodeReference hRef = HandleDisconnection(hCb);
+            ChannelFaulted?.Invoke(hRef);
         }
 
         [ConsoleUIMethod]
@@ -59,7 +98,7 @@ namespace Nebula.Core.Elysium
         }
 
         #region Nested Types
-        private class NodeReference
+        public class NodeReference
         {
             public NodeReference(IMasterServerCallback hCb, IPEndPoint hEp)
             {
