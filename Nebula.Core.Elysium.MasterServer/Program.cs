@@ -9,10 +9,12 @@ namespace Nebula.Core.Elysium.MasterServer
             try
             {
                 Master hNode = new Master();
+                string sTitle = "Elysium Master Server";
 
                 if (args.Length == 1)
                 {
                     hNode.Start(int.Parse(args[0]));
+                    sTitle += $" Net: {args[0]}";
                 }
                 else if (args.Length == 0)
                 {
@@ -26,7 +28,7 @@ namespace Nebula.Core.Elysium.MasterServer
                 //hNode.ChannelClosed += OnChannelClosed;
                 //hNode.ChannelFauled += OnChannelFaulted;
 
-                ConsoleUI hConsole = new ConsoleUI(hNode, $"Nebula MasterServer ({args[0]})");
+                ConsoleUI hConsole = new ConsoleUI(hNode, sTitle);
                 hConsole.RunAndWait();
             }
             catch (Exception e)
